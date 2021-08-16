@@ -1,0 +1,13 @@
+{
+    "name": "deliciousbrains/spinupwp-php-sdk",
+    "description": "The official SpinupWP PHP SDK",
+    "autoload": {
+        "psr-4": {
+            "DeliciousBrains\\SpinupWp\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.3",
+        "guzzlehttp/guzzle": "^7.0"
+    }
+}
