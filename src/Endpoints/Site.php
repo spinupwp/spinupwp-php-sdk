@@ -10,6 +10,11 @@ class Site extends Endpoint
     {
         $server = $this->getRequest("sites/{$id}");
 
-        return new SiteResource($server);
+        return new SiteResource($server, $this);
+    }
+
+    public function delete(int $id): void
+    {
+        $this->deleteRequest("sites/{$id}");
     }
 }

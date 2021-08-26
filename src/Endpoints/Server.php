@@ -10,6 +10,6 @@ class Server extends Endpoint
     {
         $server = $this->getRequest("servers/{$id}");
 
-        return new ServerResource($server);
+        return new ServerResource($server, $this);
     }
 }
