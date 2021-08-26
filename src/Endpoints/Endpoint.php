@@ -33,4 +33,11 @@ abstract class Endpoint
     {
         return $this->request('DELETE', $uri, $payload);
     }
+
+    protected function transformCollection(array $collection, string $class): array
+    {
+        return array_map(function ($data) use ($class) {
+            return new $class($data, $this);
+        }, $collection);
+    }
 }

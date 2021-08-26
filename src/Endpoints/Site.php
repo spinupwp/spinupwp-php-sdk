@@ -6,6 +6,13 @@ use DeliciousBrains\SpinupWp\Resources\Site as SiteResource;
 
 class Site extends Endpoint
 {
+    public function all(): array
+    {
+        $sites = $this->getRequest('sites');
+
+        return $this->transformCollection($sites['data'], SiteResource::class);
+    }
+
     public function get(int $id): SiteResource
     {
         $site = $this->getRequest("sites/{$id}");
