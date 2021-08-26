@@ -2,18 +2,23 @@
 
 namespace DeliciousBrains\SpinupWp;
 
+use DeliciousBrains\SpinupWp\Endpoints\ServerEndpoint;
 use GuzzleHttp\Client as HttpClient;
 
+/**
+ * @property ServerEndpoint $servers
+ */
 class SpinupWp
 {
     protected string $apiKey;
 
     protected HttpClient $client;
 
+    protected array $endpoints = [];
+
     public function __construct(string $apiKey, HttpClient $client = null)
     {
         $this->apiKey = $apiKey;
-
         $this->client = $client ?: $this->setClient();
     }
 
@@ -28,5 +33,27 @@ class SpinupWp
                 'Content-Type'  => 'application/json',
             ],
         ]);
+    }
+
+    public function __get(string $name)
+    {
+        if (isset($this->endpoints[$name])) {
+            return $this->endpoints[$name];
+        }
+
+        $class = $this->buildEndpointClass($name);
+
+        if (class_exists($class)) {
+            $this->endpoints[$name] = new $class($this->client);
+
+            return $this->endpoints[$name];
+        }
+    }
+
+    protected function buildEndpointClass(string $name): string
+    {
+        $name = ucfirst(substr($name, 0, -1));
+
+        return "\DeliciousBrains\SpinupWp\Endpoints\\{$name}Endpoint";
     }
 }
