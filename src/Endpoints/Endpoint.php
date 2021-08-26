@@ -4,6 +4,7 @@ namespace DeliciousBrains\SpinupWp\Endpoints;
 
 use DeliciousBrains\SpinupWp\Exceptions\NotFoundException;
 use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
+use DeliciousBrains\SpinupWp\Exceptions\TimeoutException;
 use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
 use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
 use Exception;
@@ -79,5 +80,26 @@ abstract class Endpoint
         return array_map(function ($data) use ($class) {
             return new $class($data, $this);
         }, $collection);
+    }
+
+    protected function wait(callable $callback, int $timeout = 300, int $sleep = 10)
+    {
+        $start = time();
+
+        beginning:
+
+        $return = $callback();
+
+        if ($return) {
+            return $return;
+        }
+
+        if (time() - $start < $timeout) {
+            sleep($sleep);
+
+            goto beginning;
+        }
+
+        throw new TimeoutException($return);
     }
 }
