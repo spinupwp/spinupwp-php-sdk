@@ -20,6 +20,15 @@ class Site extends Endpoint
         return new SiteResource($site['data'], $this);
     }
 
+    public function create(int $serverId, array $data): SiteResource
+    {
+        $site = $this->postRequest('sites', array_merge($data, [
+            'server_id' => $serverId,
+        ]));
+
+        return new SiteResource($site['data'], $this);
+    }
+
     public function delete(int $id): void
     {
         $this->deleteRequest("sites/{$id}");
