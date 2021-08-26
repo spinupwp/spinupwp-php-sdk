@@ -2,11 +2,11 @@
 
 namespace DeliciousBrains\SpinupWp;
 
-use DeliciousBrains\SpinupWp\Endpoints\ServerEndpoint;
+use DeliciousBrains\SpinupWp\Endpoints\Server;
 use GuzzleHttp\Client as HttpClient;
 
 /**
- * @property ServerEndpoint $servers
+ * @property Server $servers
  */
 class SpinupWp
 {
@@ -54,6 +54,6 @@ class SpinupWp
     {
         $name = ucfirst(substr($name, 0, -1));
 
-        return "\DeliciousBrains\SpinupWp\Endpoints\\{$name}Endpoint";
+        return "\DeliciousBrains\SpinupWp\Endpoints\\{$name}";
     }
 }

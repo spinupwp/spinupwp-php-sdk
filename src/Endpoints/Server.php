@@ -2,14 +2,14 @@
 
 namespace DeliciousBrains\SpinupWp\Endpoints;
 
-use DeliciousBrains\SpinupWp\Resources\Server;
+use DeliciousBrains\SpinupWp\Resources\Server as ServerResource;
 
-class ServerEndpoint extends Endpoint
+class Server extends Endpoint
 {
     public function get(int $id)
     {
         $server = $this->getRequest("servers/{$id}");
 
-        return new Server($server);
+        return new ServerResource($server);
     }
 }
