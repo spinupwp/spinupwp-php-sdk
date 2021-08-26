@@ -29,7 +29,7 @@ abstract class Endpoint
         return $this->request('GET', $uri);
     }
 
-    public function deleteRequest(string $uri, array $payload = [])
+    protected function deleteRequest(string $uri, array $payload = [])
     {
         return $this->request('DELETE', $uri, $payload);
     }

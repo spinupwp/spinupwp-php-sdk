@@ -12,7 +12,7 @@ abstract class Resource
 
     public function __construct(array $attributes, Endpoint $endpoint)
     {
-        $this->attributes = $attributes['data'];
+        $this->attributes = $attributes;
         $this->endpoint   = $endpoint;
 
         $this->fill();

@@ -2,11 +2,13 @@
 
 namespace DeliciousBrains\SpinupWp;
 
+use DeliciousBrains\SpinupWp\Endpoints\Event;
 use DeliciousBrains\SpinupWp\Endpoints\Server;
 use DeliciousBrains\SpinupWp\Endpoints\Site;
 use GuzzleHttp\Client as HttpClient;
 
 /**
+ * @property Event $events
  * @property Server $servers
  * @property Site $sites
  */
