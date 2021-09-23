@@ -7,6 +7,7 @@ use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
 use DeliciousBrains\SpinupWp\Exceptions\TimeoutException;
 use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
 use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
+use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
 use Exception;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
@@ -75,11 +76,9 @@ abstract class Endpoint
         return $this->request('DELETE', $uri, $payload);
     }
 
-    protected function transformCollection(array $collection, string $class): array
+    protected function transformCollection(array $payload, string $class): ResourceCollection
     {
-        return array_map(function ($data) use ($class) {
-            return new $class($data, $this);
-        }, $collection);
+        return new ResourceCollection($payload, $class, $this);
     }
 
     protected function wait(callable $callback, int $timeout = 300, int $sleep = 10)

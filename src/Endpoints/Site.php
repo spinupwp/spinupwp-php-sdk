@@ -2,15 +2,16 @@
 
 namespace DeliciousBrains\SpinupWp\Endpoints;
 
+use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
 use DeliciousBrains\SpinupWp\Resources\Site as SiteResource;
 
 class Site extends Endpoint
 {
-    public function all(): array
+    public function all(int $page = 1): ResourceCollection
     {
-        $sites = $this->getRequest('sites');
+        $sites = $this->getRequest("sites?page={$page}");
 
-        return $this->transformCollection($sites['data'], SiteResource::class);
+        return $this->transformCollection($sites, SiteResource::class);
     }
 
     public function get(int $id): SiteResource
@@ -27,7 +28,7 @@ class Site extends Endpoint
         ]));
 
         if ($wait) {
-            return $this->wait(function() use ($site) {
+            return $this->wait(function () use ($site) {
                 $event = (new Event($this->client))->get($site['event_id']);
 
                 if (!in_array($event->status, ['deployed', 'failed'])) {
