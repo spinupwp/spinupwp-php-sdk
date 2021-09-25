@@ -72,4 +72,9 @@ class ResourceCollection implements Countable, IteratorAggregate
             }
         }
     }
+
+    public function toArray(): array
+    {
+        return iterator_to_array($this);
+    }
 }
