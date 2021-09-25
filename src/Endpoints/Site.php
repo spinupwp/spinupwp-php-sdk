@@ -7,7 +7,7 @@ use DeliciousBrains\SpinupWp\Resources\Site as SiteResource;
 
 class Site extends Endpoint
 {
-    public function all(int $page = 1): ResourceCollection
+    public function list(int $page = 1): ResourceCollection
     {
         $sites = $this->getRequest("sites?page={$page}");
 

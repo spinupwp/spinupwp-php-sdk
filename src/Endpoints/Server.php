@@ -7,7 +7,7 @@ use DeliciousBrains\SpinupWp\Resources\Server as ServerResource;
 
 class Server extends Endpoint
 {
-    public function all(int $page = 1): ResourceCollection
+    public function list(int $page = 1): ResourceCollection
     {
         $servers = $this->getRequest("servers?page={$page}");
 

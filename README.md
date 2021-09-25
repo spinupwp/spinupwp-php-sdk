@@ -15,7 +15,7 @@ $spinupwp = new DeliciousBrains\SpinupWp\SpinupWp('API_TOKEN');
 ### Servers
 ```php
 // Return a collection of servers
-$servers = $spinupwp->servers->all();
+$servers = $spinupwp->servers->list();
 
 // Return a single server
 $server = $spinupwp->servers->get($serverId);
@@ -24,7 +24,7 @@ $server = $spinupwp->servers->get($serverId);
 ### Sites
 ```php
 // Return a collection of sites
-$sites = $spinupwp->sites->all();
+$sites = $spinupwp->sites->list();
 
 // Return a single site
 $site = $spinupwp->sites->get($siteId);
@@ -52,7 +52,7 @@ $event = $spinupwp->events->get($eventId);
 ### Resource Collections
 When retrieving a list of resources, an instance of `ResourceCollection` is returned. This class handles fetching large lists of resources without having to paginate results and perform subsequent requests manually.
 ```php
-$servers = $spinupwp->servers->all();
+$servers = $spinupwp->servers->list();
 
 // Return an array of all servers
 $servers->toArray();
