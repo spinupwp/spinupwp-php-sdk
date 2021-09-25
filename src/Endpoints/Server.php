@@ -11,7 +11,7 @@ class Server extends Endpoint
     {
         $servers = $this->getRequest("servers?page={$page}");
 
-        return $this->transformCollection($servers, ServerResource::class);
+        return $this->transformCollection($servers, ServerResource::class, $page);
     }
 
     public function get(int $id): ServerResource

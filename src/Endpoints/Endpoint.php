@@ -76,9 +76,9 @@ abstract class Endpoint
         return $this->request('DELETE', $uri, $payload);
     }
 
-    protected function transformCollection(array $payload, string $class): ResourceCollection
+    protected function transformCollection(array $payload, string $class, int $page): ResourceCollection
     {
-        return new ResourceCollection($payload, $class, $this);
+        return new ResourceCollection($payload, $class, $this, $page);
     }
 
     protected function wait(callable $callback, int $timeout = 300, int $sleep = 10)

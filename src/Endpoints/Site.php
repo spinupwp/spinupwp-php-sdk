@@ -11,7 +11,7 @@ class Site extends Endpoint
     {
         $sites = $this->getRequest("sites?page={$page}");
 
-        return $this->transformCollection($sites, SiteResource::class);
+        return $this->transformCollection($sites, SiteResource::class, $page);
     }
 
     public function get(int $id): SiteResource

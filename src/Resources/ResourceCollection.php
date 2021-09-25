@@ -15,13 +15,16 @@ class ResourceCollection implements Countable, IteratorAggregate
 
     protected Endpoint $endpoint;
 
+    protected int $page;
+
     protected array $data;
 
-    public function __construct(array $payload, string $class, Endpoint $endpoint)
+    public function __construct(array $payload, string $class, Endpoint $endpoint, int $page = 1)
     {
         $this->payload  = $payload;
         $this->class    = $class;
         $this->endpoint = $endpoint;
+        $this->page     = $page;
 
         $this->mapResourceClass();
     }
@@ -55,14 +58,12 @@ class ResourceCollection implements Countable, IteratorAggregate
 
     public function getIterator(): Generator
     {
-        $currentPage = 1;
-
         foreach ($this->data as $resource) {
             yield $resource;
         }
 
         while ($this->hasNext()) {
-            $nextPage = $this->endpoint->list(++$currentPage);
+            $nextPage = $this->endpoint->list(++$this->page);
 
             $this->payload = $nextPage->payload();
             $this->mapResourceClass();
