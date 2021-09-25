@@ -1,4 +1,5 @@
 # SpinupWP PHP SDK
+The SpinupWP PHP SDK provides an expressive interface for interacting with [SpinupWP's API](https://api.spinupwp.com). It includes a pre-defined set of classes for API resources that initialize themselves dynamically from API responses.
 
 ## Installation
 To get started, require the package via [Composer](https://getcomposer.org):
@@ -37,8 +38,6 @@ $spinupwp->sites->delete($siteId);
 ```
 On a `Site` instance you may also call:
 ```php
-$site = $spinupwp->sites->get($siteId);
-
 // Delete the current site
 $site->delete();
 ````
