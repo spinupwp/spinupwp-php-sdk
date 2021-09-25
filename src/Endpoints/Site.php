@@ -42,8 +42,10 @@ class Site extends Endpoint
         return new SiteResource($site['data'], $this);
     }
 
-    public function delete(int $id): void
+    public function delete(int $id): int
     {
-        $this->deleteRequest("sites/{$id}");
+        $request = $this->deleteRequest("sites/{$id}");
+
+        return $request['event_id'];
     }
 }

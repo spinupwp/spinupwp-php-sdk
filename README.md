@@ -34,7 +34,7 @@ $site = $spinupwp->sites->get($siteId);
 $site = $spinupwp->sites->create($serverId, []);
 
 // Delete a site
-$spinupwp->sites->delete($siteId);
+$eventId = $spinupwp->sites->delete($siteId);
 ```
 On a `Site` instance you may also call:
 ```php
