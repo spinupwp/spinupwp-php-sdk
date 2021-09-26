@@ -1,6 +1,8 @@
 # SpinupWP PHP SDK
 
-[![tests](https://github.com/deliciousbrains/spinupwp-php-sdk/actions/workflows/tests.yml/badge.svg?event=push)](https://github.com/deliciousbrains/spinupwp-php-sdk/actions/workflows/tests.yml)
+[![Tests](https://github.com/deliciousbrains/spinupwp-php-sdk/actions/workflows/tests.yml/badge.svg?event=push)](https://github.com/deliciousbrains/spinupwp-php-sdk/actions/workflows/tests.yml)
+[![Total Downloads](https://img.shields.io/packagist/dt/deliciousbrains/spinupwp-php-sdk)](https://packagist.org/packages/deliciousbrains/spinupwp-php-sdk)
+[![Latest Stable Version](https://img.shields.io/packagist/v/deliciousbrains/spinupwp-php-sdk)](https://packagist.org/packages/deliciousbrains/spinupwp-php-sdk)
 
 The SpinupWP PHP SDK provides an expressive interface for interacting with [SpinupWP's API](https://api.spinupwp.com). It includes a pre-defined set of classes for API resources that initialize themselves dynamically from API responses.
 
