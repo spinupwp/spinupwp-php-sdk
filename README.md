@@ -72,4 +72,4 @@ foreach ($servers as $server) {
 ```
 
 ## License
-SpinupWP PHP SDK is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+SpinupWP PHP SDK is open-sourced software licensed under the [MIT license](LICENSE.md).
