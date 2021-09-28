@@ -1,6 +1,8 @@
 {
     "name": "deliciousbrains/spinupwp-php-sdk",
     "description": "The official SpinupWP PHP SDK",
+    "keywords": ["spinupwp", "api"],
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "DeliciousBrains\\SpinupWp\\": "src/"
