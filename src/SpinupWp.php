@@ -48,7 +48,7 @@ class SpinupWp
         $class = $this->buildEndpointClass($name);
 
         if (class_exists($class)) {
-            $this->endpoints[$name] = new $class($this->client);
+            $this->endpoints[$name] = new $class($this->client, $this);
 
             return $this->endpoints[$name];
         }

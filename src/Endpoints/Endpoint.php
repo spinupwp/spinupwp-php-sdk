@@ -8,6 +8,7 @@ use DeliciousBrains\SpinupWp\Exceptions\TimeoutException;
 use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
 use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
 use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
+use DeliciousBrains\SpinupWp\SpinupWp;
 use Exception;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
@@ -15,10 +16,12 @@ use Psr\Http\Message\ResponseInterface;
 abstract class Endpoint
 {
     protected Client $client;
+    public SpinupWp $spinupwp;
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, SpinupWp $spinupwp)
     {
         $this->client = $client;
+        $this->spinupwp = $spinupwp;
     }
 
     protected function request(string $verb, string $uri, array $payload = [])
@@ -78,7 +81,7 @@ abstract class Endpoint
 
     protected function transformCollection(array $payload, string $class, int $page): ResourceCollection
     {
-        return new ResourceCollection($payload, $class, $this, $page);
+        return new ResourceCollection($payload, $class, $this, $this->spinupwp, $page);
     }
 
     protected function wait(callable $callback, int $timeout = 300, int $sleep = 10)
