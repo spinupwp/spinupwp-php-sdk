@@ -19,7 +19,7 @@ class SiteTest extends TestCase
     public function setUp(): void
     {
         $this->spinupwp     = Mockery::mock(SpinupWp::class);
-        $this->client       = $this->spinupwp->setClient();
+        $this->client       = Mockery::mock(Client::class);
         $this->siteEndpoint = new Site($this->client, $this->spinupwp);
     }
 
