@@ -4,6 +4,7 @@ namespace DeliciousBrains\SpinupWp\Endpoints;
 
 use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
 use DeliciousBrains\SpinupWp\Resources\Site as SiteResource;
+use DeliciousBrains\SpinupWp\Resources\Event as EventResource;
 
 class Site extends Endpoint
 {
@@ -18,7 +19,7 @@ class Site extends Endpoint
     {
         $site = $this->getRequest("sites/{$id}");
 
-        return new SiteResource($site['data'], $this);
+        return new SiteResource($site['data'], $this, $this->spinupwp);
     }
 
     public function create(int $serverId, array $data, bool $wait = false): SiteResource
@@ -29,23 +30,26 @@ class Site extends Endpoint
 
         if ($wait) {
             return $this->wait(function () use ($site) {
-                $event = (new Event($this->client))->get($site['event_id']);
+                $event = $this->spinupwp->events->get($site['event_id']);
 
                 if (!in_array($event->status, ['deployed', 'failed'])) {
                     return false;
                 }
 
-                return $this->get($site['data']['id']);
+                $site = $this->get($site['data']['id']);
+                $site->event = $event;
+                return $site;
             });
         }
 
-        return new SiteResource($site['data'], $this);
+        $site['data']['event_id'] = $site['event_id'];
+        return new SiteResource($site['data'], $this, $this->spinupwp);
     }
 
-    public function delete(int $id): int
+    public function delete(int $id): EventResource
     {
         $request = $this->deleteRequest("sites/{$id}");
 
-        return $request['event_id'];
+        return $this->spinupwp->events->get($request['event_id']);
     }
 }
