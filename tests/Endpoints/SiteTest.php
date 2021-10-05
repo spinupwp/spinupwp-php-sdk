@@ -6,6 +6,7 @@ use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
 use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
 use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
 use DeliciousBrains\SpinupWp\SpinupWp;
+use DeliciousBrains\SpinupWp\Resources\Event as EventResource;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +20,7 @@ class SiteTest extends TestCase
     public function setUp(): void
     {
         $this->client       = Mockery::mock(Client::class);
-        $this->spinupwp     = Mockery::mock(SpinupWp::class, ['123456789', $this->client]);
+        $this->spinupwp     = Mockery::mock(SpinupWp::class, ['A fake api key', $this->client]);
         $this->siteEndpoint = new Site($this->client, $this->spinupwp);
     }
 
@@ -58,13 +59,16 @@ class SiteTest extends TestCase
         $this->assertEquals('hellfish.media', $site->domain);
     }
 
+    /*
+     * Does not currently work.
+     */
     public function test_delete_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1', [])->andReturn(
             new Response(200, [], '{"event_id": 100}')
         );
 
-        $this->assertEquals(100, $this->siteEndpoint->delete(1));
+        $this->assertEquals(100, $this->siteEndpoint->delete(1)->id);
     }
 
     public function test_handling_validation_errors(): void
