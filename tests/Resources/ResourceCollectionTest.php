@@ -30,8 +30,8 @@ class ResourceCollectionTest extends TestCase
                 'count'    => 2,
             ],
         ];
-        $this->spinupwp       = Mockery::mock(SpinupWp::class);
-        $this->client         = Mockery::mock(Client::class);
+        $this->client       = Mockery::mock(Client::class);
+        $this->spinupwp     = Mockery::mock(SpinupWp::class, ['123456789', $this->client]);
         $this->serverEndpoint = new ServerEndpoint(Mockery::mock(Client::class), $this->spinupwp);
     }
 

@@ -42,7 +42,7 @@ class Site extends Endpoint
             });
         }
 
-        $site['data']['event_id'] = $site['event_id'];
+        $site['data']['event_id'] = $site['event_id'] ?? 0;
         return new SiteResource($site['data'], $this, $this->spinupwp);
     }
 

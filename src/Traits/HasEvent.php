@@ -3,7 +3,7 @@
 namespace DeliciousBrains\SpinupWp\Traits;
 
 trait HasEvent {
-    public ?int $event_id = 0;
+    public int $event_id = 0;
 
     public function event()
     {
