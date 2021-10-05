@@ -1,4 +1,4 @@
-name: Phpunit
+name: Phpstan
 
 on: [push, pull_request]
 
@@ -14,5 +14,5 @@ jobs:
       - name: Install Dependencies via Composer
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - name: Run phpunit
-        run: composer test
+      - name: Run phpstan
+        run: composer phpstan
