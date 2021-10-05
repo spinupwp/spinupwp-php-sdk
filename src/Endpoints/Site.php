@@ -15,6 +15,13 @@ class Site extends Endpoint
         return $this->transformCollection($sites, SiteResource::class, $page);
     }
 
+    public function listForServer(int $serverId, int $page = 1): ResourceCollection
+    {
+        $sites = $this->getRequest("sites?server_id={$serverId}&page={$page}");
+
+        return $this->transformCollection($sites, SiteResource::class, $page);
+    }
+
     public function get(int $id): SiteResource
     {
         $site = $this->getRequest("sites/{$id}");
