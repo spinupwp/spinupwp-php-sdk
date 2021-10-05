@@ -18,7 +18,7 @@ abstract class Resource
         $this->fill();
     }
 
-    protected function fill()
+    protected function fill(): void
     {
         foreach ($this->attributes as $key => $value) {
             $this->{$key} = $value;

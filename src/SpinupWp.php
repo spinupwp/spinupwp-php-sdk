@@ -39,6 +39,9 @@ class SpinupWp
         ]);
     }
 
+    /**
+     * @return mixed|void
+     */
     public function __get(string $name)
     {
         if (isset($this->endpoints[$name])) {
