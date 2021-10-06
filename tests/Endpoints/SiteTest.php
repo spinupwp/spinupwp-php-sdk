@@ -5,23 +5,35 @@ use DeliciousBrains\SpinupWp\Exceptions\NotFoundException;
 use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
 use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
 use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
+use DeliciousBrains\SpinupWp\Factories\Endpoints\SiteFactory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 class SiteTest extends TestCase
 {
+    public SiteFactory $siteFactory;
+
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
+    {
+        $this->siteFactory = new SiteFactory();
+
+        parent::__construct($name, $data, $dataName);
+    }
+
     public function test_get_request(): void
     {
         $client       = Mockery::mock(Client::class);
         $siteEndpoint = new Site($client);
 
+        $getSiteResponse = $this->siteFactory->getSite();
+
         $client->shouldReceive('request')->once()->with('GET', 'sites/1', [])->andReturn(
-            new Response(200, [], '{"data": {"domain": "hellfish.media"}}')
+            $getSiteResponse->getResponse()
         );
 
         $site = $siteEndpoint->get(1);
-        $this->assertEquals('hellfish.media', $site->domain);
+        $this->assertEquals($getSiteResponse->get('data.domain'), $site->domain);
     }
 
     public function test_list_request(): void
@@ -29,8 +41,10 @@ class SiteTest extends TestCase
         $client       = Mockery::mock(Client::class);
         $siteEndpoint = new Site($client);
 
+        $listSitesResponse = $this->siteFactory->listSites();
+
         $client->shouldReceive('request')->once()->with('GET', 'sites?page=1', [])->andReturn(
-            new Response(200, [], '{"data": [{"domain": "hellfish.media"}, {"domain": "staging.hellfish.media"}], "pagination": {"previous": null, "next": null, "count": 2}}')
+            $listSitesResponse->getResponse()
         );
 
         $sites = $siteEndpoint->list();
