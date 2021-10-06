@@ -10,6 +10,7 @@ class SiteResponseFactory extends BaseFactory
 
     public function siteDefinition(): array
     {
+        //@TODO: Flesh this out to match a full response from the api
         return [
             'data' => [
                 'domain' => $this->faker->domainName(),
@@ -44,7 +45,7 @@ class SiteResponseFactory extends BaseFactory
 
         $responseData = [
             'data' => $sites,
-            'pagination' => [
+            'pagination' => [ //@TODO: Abstract me so that pagination is easy to add to any given endpoint
                 'previous' => null,
                 'next' => null,
                 'count' => count($sites),
