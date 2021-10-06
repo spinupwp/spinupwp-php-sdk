@@ -18,8 +18,8 @@ class SiteTest extends TestCase
 
     public function setUp(): void
     {
-        $this->spinupwp     = Mockery::mock(SpinupWp::class);
         $this->client       = Mockery::mock(Client::class);
+        $this->spinupwp     = Mockery::mock(SpinupWp::class, ['', $this->client]);
         $this->siteEndpoint = new Site($this->client, $this->spinupwp);
     }
 
@@ -51,7 +51,11 @@ class SiteTest extends TestCase
                 'server_id' => 1,
             ]
         ])->andReturn(
-            new Response(200, [], '{"data": {"domain": "hellfish.media"}}')
+            new Response(200, [], '{"data": {"domain": "hellfish.media"}, "event_id":100}')
+        );
+
+        $this->client->shouldReceive('request')->once()->with('GET', 'events/100', [])->andReturn(
+            new Response(200, [], '{"data": {"name": "Creating site hellfish.media"}}')
         );
 
         $site = $this->siteEndpoint->create(1, ['domain' => 'hellfish.media']);
@@ -64,7 +68,15 @@ class SiteTest extends TestCase
             new Response(200, [], '{"event_id": 100}')
         );
 
-        $this->assertEquals(100, $this->siteEndpoint->delete(1));
+        $this->client->shouldReceive('request')->once()->with('GET', 'events/100', [])->andReturn(
+            new Response(200, [], '{"data": {"name": "Creating site hellfish.media"}}')
+        );
+
+        $response = $this->siteEndpoint->delete(1);
+
+
+        $this->assertSame(\DeliciousBrains\SpinupWp\Resources\Event::class, get_class($response));
+        $this->assertSame('Creating site hellfish.media', $response->name);
     }
 
     public function test_handling_validation_errors(): void
