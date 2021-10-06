@@ -5,18 +5,18 @@ use DeliciousBrains\SpinupWp\Exceptions\NotFoundException;
 use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
 use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
 use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
-use DeliciousBrains\SpinupWp\Factories\Endpoints\SiteFactory;
+use DeliciousBrains\SpinupWp\Factories\Endpoints\SiteResponseFactory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 class SiteTest extends TestCase
 {
-    public SiteFactory $siteFactory;
+    public SiteResponseFactory $siteResponseFactory;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
-        $this->siteFactory = new SiteFactory();
+        $this->siteResponseFactory = new SiteResponseFactory();
 
         parent::__construct($name, $data, $dataName);
     }
@@ -26,7 +26,7 @@ class SiteTest extends TestCase
         $client       = Mockery::mock(Client::class);
         $siteEndpoint = new Site($client);
 
-        $getSiteResponse = $this->siteFactory->getSite();
+        $getSiteResponse = $this->siteResponseFactory->getSite();
 
         $client->shouldReceive('request')->once()->with('GET', 'sites/1', [])->andReturn(
             $getSiteResponse->getResponse()
@@ -41,7 +41,7 @@ class SiteTest extends TestCase
         $client       = Mockery::mock(Client::class);
         $siteEndpoint = new Site($client);
 
-        $listSitesResponse = $this->siteFactory->listSites();
+        $listSitesResponse = $this->siteResponseFactory->listSites(2);
 
         $client->shouldReceive('request')->once()->with('GET', 'sites?page=1', [])->andReturn(
             $listSitesResponse->getResponse()

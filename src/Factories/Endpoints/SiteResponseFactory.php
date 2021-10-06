@@ -4,7 +4,7 @@ namespace DeliciousBrains\SpinupWp\Factories\Endpoints;
 
 use Faker\Generator;
 
-class SiteFactory extends BaseFactory
+class SiteResponseFactory extends BaseFactory
 {
     public Generator $faker;
 
@@ -38,7 +38,7 @@ class SiteFactory extends BaseFactory
 
         $sites = [];
 
-        for ($i = 0; $i <= $count; $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $sites[] = $this->siteDefinition();
         }
 
@@ -47,7 +47,7 @@ class SiteFactory extends BaseFactory
             'pagination' => [
                 'previous' => null,
                 'next' => null,
-                'count' => 2,
+                'count' => count($sites),
             ],
         ];
 
