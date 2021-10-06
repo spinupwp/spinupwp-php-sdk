@@ -3,7 +3,6 @@
 namespace DeliciousBrains\SpinupWp\Factories\Endpoints;
 
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Enumerable;
 
 class GeneratedResource
 {
@@ -26,6 +25,9 @@ class GeneratedResource
         return $this->sourceData;
     }
 
+    /**
+     * some helpers borrowed form Laravel so that we can pull the data using dot notation for cleaner assertions
+     */
     public function get($key, $default = null)
     {
         $array = $this->sourceData;
