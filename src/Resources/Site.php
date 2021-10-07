@@ -4,8 +4,11 @@ namespace DeliciousBrains\SpinupWp\Resources;
 
 class Site extends Resource
 {
-    public function delete(): int
+    public function delete(): ?int
     {
-        return $this->endpoint->delete($this->id);
+        if (method_exists($this->endpoint, 'delete')) {
+            return $this->endpoint->delete($this->id);
+        }
+        return null;
     }
 }

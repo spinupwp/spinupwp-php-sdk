@@ -63,6 +63,10 @@ class ResourceCollection implements Countable, IteratorAggregate
         }
 
         while ($this->hasNext()) {
+            if (!method_exists($this->endpoint, 'list')) {
+                return;
+            }
+
             $nextPage = $this->endpoint->list(++$this->page);
 
             $this->payload = $nextPage->payload();
