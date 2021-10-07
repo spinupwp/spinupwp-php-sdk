@@ -20,7 +20,7 @@ class SiteTest extends TestCase
     public function setUp(): void
     {
         $this->client       = Mockery::mock(Client::class);
-        $this->spinupwp     = Mockery::mock(SpinupWp::class, ['A fake api key', $this->client]);
+        $this->spinupwp     = Mockery::mock(SpinupWp::class, ['', $this->client]);
         $this->siteEndpoint = new Site($this->client, $this->spinupwp);
     }
 
@@ -59,16 +59,20 @@ class SiteTest extends TestCase
         $this->assertEquals('hellfish.media', $site->domain);
     }
 
-    /*
-     * Does not currently work.
-     */
     public function test_delete_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1', [])->andReturn(
             new Response(200, [], '{"event_id": 100}')
         );
 
-        $this->assertEquals(100, $this->siteEndpoint->delete(1)->id);
+        $this->client->shouldReceive('request')->once()->with('GET', 'events/100', [])->andReturn(
+            new Response(200, [], '{"data": {"name": "Creating site hellfish.media"}}')
+        );
+
+        $response = $this->siteEndpoint->delete(1);
+
+        $this->assertSame(EventResource::class, get_class($response));
+        $this->assertSame('Creating site hellfish.media', $response->name);
     }
 
     public function test_handling_validation_errors(): void

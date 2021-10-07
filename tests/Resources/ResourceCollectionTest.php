@@ -31,8 +31,8 @@ class ResourceCollectionTest extends TestCase
             ],
         ];
         $this->client       = Mockery::mock(Client::class);
-        $this->spinupwp     = Mockery::mock(SpinupWp::class, ['123456789', $this->client]);
-        $this->serverEndpoint = new ServerEndpoint(Mockery::mock(Client::class), $this->spinupwp);
+        $this->spinupwp     = Mockery::mock(SpinupWp::class, ['', $this->client]);
+        $this->serverEndpoint = new ServerEndpoint($this->client, $this->spinupwp);
     }
 
     public function test_resources_are_mapped(): void
@@ -67,6 +67,7 @@ class ResourceCollectionTest extends TestCase
         $this->client->shouldReceive('request')->once()->with('GET', 'servers?page=2', [])->andReturn(
             new Response(200, [], '{"data": [{"name": "dev-hellfish-media"}], "pagination": {"previous": null, "next": null, "count": 3}}')
         );
+
         $servers = (new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp))->toArray();
 
         $this->assertCount(3, $servers);
