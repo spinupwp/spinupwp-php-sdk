@@ -13,6 +13,8 @@ abstract class Resource
 
     public SpinupWp $spinupwp;
 
+    public int $event_id = 0;
+
     public function __construct(array $attributes, Endpoint $endpoint, SpinupWp $spinupwp)
     {
         $this->attributes = $attributes;
@@ -32,8 +34,14 @@ abstract class Resource
         foreach ($this->attributes as $key => $value) {
             $this->{$key} = $value;
         }
-        if(property_exists($this,'event_id') && $this->event_id) {
-            $this->event = $this->spinupwp->events->get($this->event_id);
+    }
+
+    public function event()
+    {
+        if(!$this->event_id){
+            return null;
         }
+
+        return $this->spinupwp->events->get($this->event_id);
     }
 }
