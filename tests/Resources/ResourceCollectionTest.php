@@ -57,9 +57,6 @@ class ResourceCollectionTest extends TestCase
         $this->assertEquals('hellfish-media', $servers[0]->name);
     }
 
-    /*
-     * Does not currently work.
-     */
     public function test_resources_can_be_iterated(): void
     {
         $this->payload['pagination']['next'] = 'https://api.spinupwp.app/v1/servers';
