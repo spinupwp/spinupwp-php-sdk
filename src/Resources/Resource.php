@@ -18,6 +18,11 @@ abstract class Resource
         $this->fill();
     }
 
+    public function toArray(): array
+    {
+        return $this->attributes;
+    }
+
     protected function fill()
     {
         foreach ($this->attributes as $key => $value) {
