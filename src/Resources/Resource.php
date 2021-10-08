@@ -2,23 +2,19 @@
 
 namespace DeliciousBrains\SpinupWp\Resources;
 
-use DeliciousBrains\SpinupWp\Endpoints\Endpoint;
 use DeliciousBrains\SpinupWp\SpinupWp;
 
 abstract class Resource
 {
     protected array $attributes;
 
-    protected Endpoint $endpoint;
-
-    public SpinupWp $spinupwp;
+    protected SpinupWp $spinupwp;
 
     public int $event_id = 0;
 
-    public function __construct(array $attributes, Endpoint $endpoint, SpinupWp $spinupwp)
+    public function __construct(array $attributes, SpinupWp $spinupwp)
     {
         $this->attributes = $attributes;
-        $this->endpoint   = $endpoint;
         $this->spinupwp   = $spinupwp;
 
         $this->fill();

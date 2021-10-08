@@ -19,7 +19,7 @@ class Site extends Endpoint
     {
         $site = $this->getRequest("sites/{$id}");
 
-        return new SiteResource($site['data'], $this, $this->spinupwp);
+        return new SiteResource($site['data'], $this->spinupwp);
     }
 
     public function create(int $serverId, array $data, bool $wait = false): SiteResource
@@ -43,7 +43,7 @@ class Site extends Endpoint
         }
 
         $site['data']['event_id'] = $site['event_id'] ?? 0;
-        return new SiteResource($site['data'], $this, $this->spinupwp);
+        return new SiteResource($site['data'], $this->spinupwp);
     }
 
     public function delete(int $id): EventResource

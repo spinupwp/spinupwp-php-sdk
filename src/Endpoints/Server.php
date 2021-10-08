@@ -18,6 +18,6 @@ class Server extends Endpoint
     {
         $server = $this->getRequest("servers/{$id}");
 
-        return new ServerResource($server['data'], $this, $this->spinupwp);
+        return new ServerResource($server['data'], $this->spinupwp);
     }
 }
