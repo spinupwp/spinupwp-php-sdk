@@ -5,8 +5,8 @@ use DeliciousBrains\SpinupWp\Exceptions\NotFoundException;
 use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
 use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
 use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
-use DeliciousBrains\SpinupWp\SpinupWp;
 use DeliciousBrains\SpinupWp\Resources\Event as EventResource;
+use DeliciousBrains\SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
@@ -14,7 +14,9 @@ use PHPUnit\Framework\TestCase;
 class SiteTest extends TestCase
 {
     public SpinupWp $spinupwp;
+
     public Site $siteEndpoint;
+
     public Client $client;
 
     public function setUp(): void

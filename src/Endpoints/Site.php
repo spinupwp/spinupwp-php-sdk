@@ -2,9 +2,9 @@
 
 namespace DeliciousBrains\SpinupWp\Endpoints;
 
+use DeliciousBrains\SpinupWp\Resources\Event as EventResource;
 use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
 use DeliciousBrains\SpinupWp\Resources\Site as SiteResource;
-use DeliciousBrains\SpinupWp\Resources\Event as EventResource;
 
 class Site extends Endpoint
 {

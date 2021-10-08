@@ -38,7 +38,7 @@ abstract class Resource
 
     public function event()
     {
-        if(!$this->event_id){
+        if (!$this->event_id) {
             return null;
         }
 

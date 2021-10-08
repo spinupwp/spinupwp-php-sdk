@@ -11,8 +11,11 @@ use PHPUnit\Framework\TestCase;
 class ResourceCollectionTest extends TestCase
 {
     protected array $payload;
+
     protected SpinupWp $spinupwp;
+
     protected Client $client;
+
     protected ServerEndpoint $serverEndpoint;
 
     public function setUp(): void
@@ -30,28 +33,28 @@ class ResourceCollectionTest extends TestCase
                 'count'    => 2,
             ],
         ];
-        $this->client       = Mockery::mock(Client::class);
-        $this->spinupwp     = Mockery::mock(SpinupWp::class, ['', $this->client]);
+        $this->client         = Mockery::mock(Client::class);
+        $this->spinupwp       = Mockery::mock(SpinupWp::class, ['', $this->client]);
         $this->serverEndpoint = new ServerEndpoint($this->client, $this->spinupwp);
     }
 
     public function test_resources_are_mapped(): void
     {
-        $servers  = (new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp));
+        $servers = (new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp));
 
         $this->assertInstanceOf(ServerResource::class, $servers->toArray()[0]);
     }
 
     public function test_resources_are_countable(): void
     {
-        $servers  = new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp);
+        $servers = new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp);
 
         $this->assertEquals(2, $servers->count());
     }
 
     public function test_resources_are_arrayable(): void
     {
-        $servers  = (new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp))->toArray();
+        $servers = (new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp))->toArray();
 
         $this->assertIsArray($servers);
         $this->assertEquals('hellfish-media', $servers[0]->name);
@@ -73,7 +76,7 @@ class ResourceCollectionTest extends TestCase
 
     public function test_resources_have_payload(): void
     {
-        $servers  = new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp);
+        $servers = new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp);
 
         $this->assertEquals($this->payload, $servers->payload());
     }

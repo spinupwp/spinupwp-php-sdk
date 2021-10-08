@@ -16,11 +16,12 @@ use Psr\Http\Message\ResponseInterface;
 abstract class Endpoint
 {
     protected Client $client;
+
     public SpinupWp $spinupwp;
 
     public function __construct(Client $client, SpinupWp $spinupwp)
     {
-        $this->client = $client;
+        $this->client   = $client;
         $this->spinupwp = $spinupwp;
     }
 

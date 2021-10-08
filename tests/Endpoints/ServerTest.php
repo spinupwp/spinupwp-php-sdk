@@ -10,7 +10,7 @@ class ServerTest extends TestCase
 {
     public function test_get_request(): void
     {
-        $spinupwp      = Mockery::mock(SpinupWp::class);
+        $spinupwp       = Mockery::mock(SpinupWp::class);
         $client         = Mockery::mock(Client::class);
         $serverEndpoint = new Server($client, $spinupwp);
 
