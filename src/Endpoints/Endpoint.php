@@ -10,24 +10,20 @@ use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
 use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
 use DeliciousBrains\SpinupWp\SpinupWp;
 use Exception;
-use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class Endpoint
 {
-    protected Client $client;
+    protected SpinupWp $spinupwp;
 
-    public SpinupWp $spinupwp;
-
-    public function __construct(Client $client, SpinupWp $spinupwp)
+    public function __construct(SpinupWp $spinupwp)
     {
-        $this->client   = $client;
         $this->spinupwp = $spinupwp;
     }
 
     protected function request(string $verb, string $uri, array $payload = []): array
     {
-        $response = $this->client->request(
+        $response = $this->spinupwp->getClient()->request(
             $verb,
             $uri,
             empty($payload) ? [] : ['form_params' => $payload]

@@ -10,9 +10,9 @@ class EventTest extends TestCase
 {
     public function test_get_request(): void
     {
-        $spinupwp      = Mockery::mock(SpinupWp::class);
         $client        = Mockery::mock(Client::class);
-        $eventEndpoint = new Event($client, $spinupwp);
+        $spinupwp      = new SpinupWp('123', $client);
+        $eventEndpoint = new Event($spinupwp);
 
         $client->shouldReceive('request')->once()->with('GET', 'events/1', [])->andReturn(
             new Response(200, [], '{"data": {"name": "Creating site hellfish.media"}}')

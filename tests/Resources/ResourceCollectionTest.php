@@ -34,8 +34,8 @@ class ResourceCollectionTest extends TestCase
             ],
         ];
         $this->client         = Mockery::mock(Client::class);
-        $this->spinupwp       = Mockery::mock(SpinupWp::class, ['', $this->client]);
-        $this->serverEndpoint = new ServerEndpoint($this->client, $this->spinupwp);
+        $this->spinupwp       = new SpinupWp('123', $this->client);
+        $this->serverEndpoint = new ServerEndpoint($this->spinupwp);
     }
 
     public function test_resources_are_mapped(): void

@@ -22,8 +22,8 @@ class SiteTest extends TestCase
     public function setUp(): void
     {
         $this->client       = Mockery::mock(Client::class);
-        $this->spinupwp     = Mockery::mock(SpinupWp::class, ['', $this->client]);
-        $this->siteEndpoint = new Site($this->client, $this->spinupwp);
+        $this->spinupwp     = new SpinupWp('123', $this->client);
+        $this->siteEndpoint = new Site($this->spinupwp);
     }
 
     public function test_get_request(): void
@@ -88,7 +88,7 @@ class SiteTest extends TestCase
         );
 
         try {
-            (new Site($this->client, $this->spinupwp))->create(1, []);
+            (new Site($this->spinupwp))->create(1, []);
         } catch (ValidationException $e) {
             //
         }
@@ -104,7 +104,7 @@ class SiteTest extends TestCase
             new Response(404)
         );
 
-        (new Site($this->client, $this->spinupwp))->get(1);
+        (new Site($this->spinupwp))->get(1);
     }
 
     public function test_handling_401_errors(): void
@@ -115,7 +115,7 @@ class SiteTest extends TestCase
             new Response(401)
         );
 
-        (new Site($this->client, $this->spinupwp))->get(1);
+        (new Site($this->spinupwp))->get(1);
     }
 
     public function test_handling_429_errors(): void
@@ -126,6 +126,6 @@ class SiteTest extends TestCase
             new Response(429)
         );
 
-        (new Site($this->client, $this->spinupwp))->get(1);
+        (new Site($this->spinupwp))->get(1);
     }
 }
