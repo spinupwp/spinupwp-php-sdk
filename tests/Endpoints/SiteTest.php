@@ -67,14 +67,7 @@ class SiteTest extends TestCase
             new Response(200, [], '{"event_id": 100}')
         );
 
-        $this->client->shouldReceive('request')->once()->with('GET', 'events/100', [])->andReturn(
-            new Response(200, [], '{"data": {"name": "Creating site hellfish.media"}}')
-        );
-
-        $response = $this->siteEndpoint->delete(1);
-
-        $this->assertSame(EventResource::class, get_class($response));
-        $this->assertSame('Creating site hellfish.media', $response->name);
+        $this->assertEquals(100, $this->siteEndpoint->delete(1));
     }
 
     public function test_handling_validation_errors(): void

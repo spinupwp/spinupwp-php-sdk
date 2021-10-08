@@ -10,7 +10,7 @@ abstract class Resource
 
     protected SpinupWp $spinupwp;
 
-    public int $event_id = 0;
+    public ?int $eventId = null;
 
     public function __construct(array $attributes, SpinupWp $spinupwp)
     {
@@ -32,12 +32,12 @@ abstract class Resource
         }
     }
 
-    public function event()
+    public function event(): ?Event
     {
-        if (!$this->event_id) {
+        if (!$this->eventId) {
             return null;
         }
 
-        return $this->spinupwp->events->get($this->event_id);
+        return $this->spinupwp->events->get($this->eventId);
     }
 }

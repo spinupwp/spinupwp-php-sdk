@@ -46,10 +46,10 @@ class Site extends Endpoint
         return new SiteResource($site['data'], $this->spinupwp);
     }
 
-    public function delete(int $id): EventResource
+    public function delete(int $id): int
     {
         $request = $this->deleteRequest("sites/{$id}");
 
-        return $this->spinupwp->events->get($request['event_id']);
+        return $request['event_id'];
     }
 }
