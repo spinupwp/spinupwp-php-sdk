@@ -50,7 +50,7 @@ class SiteTest extends TestCase
             'form_params' => [
                 'domain'    => 'hellfish.media',
                 'server_id' => 1,
-            ]
+            ],
         ])->andReturn(
             new Response(200, [], '{"data": {"domain": "hellfish.media"}}')
         );
@@ -80,7 +80,7 @@ class SiteTest extends TestCase
         $this->client->shouldReceive('request')->once()->with('POST', 'sites', [
             'form_params' => [
                 'server_id' => 1,
-            ]
+            ],
         ])->andReturn(
             new Response(422, [], '{"domain": ["The domain is required."]}')
         );

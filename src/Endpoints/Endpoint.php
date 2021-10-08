@@ -24,16 +24,18 @@ abstract class Endpoint
         $this->spinupwp = $spinupwp;
     }
 
-    protected function request(string $verb, string $uri, array $payload = [])
+    protected function request(string $verb, string $uri, array $payload = []): array
     {
-        $response = $this->client->request($verb, $uri,
+        $response = $this->client->request(
+            $verb,
+            $uri,
             empty($payload) ? [] : ['form_params' => $payload]
         );
 
         $statusCode = $response->getStatusCode();
 
         if ($statusCode < 200 || $statusCode > 299) {
-            return $this->handleRequestError($response);
+            $this->handleRequestError($response);
         }
 
         $responseBody = (string) $response->getBody();
@@ -64,17 +66,17 @@ abstract class Endpoint
         throw new Exception((string) $response->getBody());
     }
 
-    protected function getRequest(string $uri)
+    protected function getRequest(string $uri): array
     {
         return $this->request('GET', $uri);
     }
 
-    protected function postRequest(string $uri, array $payload = [])
+    protected function postRequest(string $uri, array $payload = []): array
     {
         return $this->request('POST', $uri, $payload);
     }
 
-    protected function deleteRequest(string $uri, array $payload = [])
+    protected function deleteRequest(string $uri, array $payload = []): array
     {
         return $this->request('DELETE', $uri, $payload);
     }
@@ -84,6 +86,10 @@ abstract class Endpoint
         return new ResourceCollection($payload, $class, $this, $this->spinupwp, $page);
     }
 
+    /**
+     * @return mixed
+     * @throws TimeoutException
+     */
     protected function wait(callable $callback, int $timeout = 300, int $sleep = 10)
     {
         $start = time();
@@ -102,6 +108,9 @@ abstract class Endpoint
             goto beginning;
         }
 
+        if (!(is_array($return) || is_null($return))) {
+            $return = [$return];
+        }
         throw new TimeoutException($return);
     }
 }

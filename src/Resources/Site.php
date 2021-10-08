@@ -6,8 +6,11 @@ use DeliciousBrains\SpinupWp\Resources\Event as EventResource;
 
 class Site extends Resource
 {
-    public function delete(): EventResource
+    public function delete(): ?EventResource
     {
-        return $this->endpoint->delete($this->id);
+        if (method_exists($this->endpoint, 'delete')) {
+            return $this->endpoint->delete($this->id);
+        }
+        return null;
     }
 }
