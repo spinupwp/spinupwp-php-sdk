@@ -42,8 +42,7 @@ class Site extends Endpoint
             });
         }
 
-        $site['data']['event_id'] = $site['event_id'] ?? 0;
-        return new SiteResource($site['data'], $this->spinupwp);
+        return new SiteResource($site, $this->spinupwp);
     }
 
     public function delete(int $id): int
