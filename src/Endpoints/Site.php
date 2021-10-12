@@ -2,7 +2,6 @@
 
 namespace DeliciousBrains\SpinupWp\Endpoints;
 
-use DeliciousBrains\SpinupWp\Resources\Event as EventResource;
 use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
 use DeliciousBrains\SpinupWp\Resources\Site as SiteResource;
 
@@ -19,7 +18,7 @@ class Site extends Endpoint
     {
         $site = $this->getRequest("sites/{$id}");
 
-        return new SiteResource($site['data'], $this->spinupwp);
+        return new SiteResource($site, $this->spinupwp);
     }
 
     public function create(int $serverId, array $data, bool $wait = false): SiteResource

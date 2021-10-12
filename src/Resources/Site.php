@@ -8,7 +8,7 @@ class Site extends Resource
 {
     public function __construct(array $site, SpinupWp $spinupwp)
     {
-        parent::__construct($site['data'], $spinupwp);
+        parent::__construct($site, $spinupwp);
         $this->eventId = $site['event_id'] ?? null;
     }
 

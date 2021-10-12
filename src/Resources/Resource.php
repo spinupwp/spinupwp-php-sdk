@@ -12,9 +12,9 @@ abstract class Resource
 
     public ?int $eventId = null;
 
-    public function __construct(array $attributes, SpinupWp $spinupwp)
+    public function __construct(array $payload, SpinupWp $spinupwp)
     {
-        $this->attributes = $attributes;
+        $this->attributes = $payload['data'];
         $this->spinupwp   = $spinupwp;
 
         $this->fill();
