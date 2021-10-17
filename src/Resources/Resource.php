@@ -8,7 +8,7 @@ class Resource
 {
     protected array $attributes;
 
-    public ?int $eventId = null;
+    protected ?int $eventId = null;
 
     protected SpinupWp $spinupwp;
 
@@ -31,6 +31,11 @@ class Resource
         foreach ($this->attributes as $key => $value) {
             $this->{$key} = $value;
         }
+    }
+
+    public function eventId(): ?int
+    {
+        return $this->eventId;
     }
 
     public function event(): ?Event

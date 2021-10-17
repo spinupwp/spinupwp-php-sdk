@@ -42,7 +42,7 @@ class ResourceTest extends TestCase
             new Response(200, [], '{"data": {"name": "Creating site hellfish.media"}}')
         );
 
-        $this->assertEquals(100, $resource->eventId);
+        $this->assertEquals(100, $resource->eventId());
         $this->assertEquals('Creating site hellfish.media', $resource->event()->name);
     }
 }
