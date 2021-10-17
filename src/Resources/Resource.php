@@ -4,17 +4,18 @@ namespace DeliciousBrains\SpinupWp\Resources;
 
 use DeliciousBrains\SpinupWp\SpinupWp;
 
-abstract class Resource
+class Resource
 {
     protected array $attributes;
 
-    protected SpinupWp $spinupwp;
-
     public ?int $eventId = null;
+
+    protected SpinupWp $spinupwp;
 
     public function __construct(array $payload, SpinupWp $spinupwp)
     {
-        $this->attributes = $payload['data'];
+        $this->attributes = $payload['data'] ?? [];
+        $this->eventId    = $payload['event_id'] ?? null;
         $this->spinupwp   = $spinupwp;
 
         $this->fill();
