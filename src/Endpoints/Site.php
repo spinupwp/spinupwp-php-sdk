@@ -35,9 +35,7 @@ class Site extends Endpoint
                     return false;
                 }
 
-                $site = $this->get($site['data']['id']);
-                $site->event = $event;
-                return $site;
+                return $this->get($site['data']['id']);
             });
         }
 
