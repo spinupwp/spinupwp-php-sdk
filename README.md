@@ -41,11 +41,17 @@ $site = $spinupwp->sites->create($serverId, []);
 
 // Delete a site
 $eventId = $spinupwp->sites->delete($siteId);
+
+// Run a git deployment
+$eventId = $spinupwp->sites->gitDeploy($siteId);
 ```
 On a `Site` instance you may also call:
 ```php
 // Delete the current site
 $site->delete();
+
+// Run a git deployment
+$site->gitDeploy();
 ````
 
 ### Events
