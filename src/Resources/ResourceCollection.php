@@ -36,7 +36,7 @@ class ResourceCollection implements Countable, IteratorAggregate
     protected function mapResourceClass(): void
     {
         $this->data = array_map(function ($data) {
-            return new $this->class($data, $this->endpoint, $this->spinupwp);
+            return new $this->class(['data' => $data], $this->spinupwp);
         }, $this->payload['data']);
     }
 
@@ -67,6 +67,10 @@ class ResourceCollection implements Countable, IteratorAggregate
         }
 
         while ($this->hasNext()) {
+            if (!method_exists($this->endpoint, 'list')) {
+                return;
+            }
+
             $nextPage = $this->endpoint->list(++$this->page);
 
             $this->payload = $nextPage->payload();

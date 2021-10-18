@@ -23,12 +23,13 @@ class SpinupWp
     public function __construct(string $apiKey, HttpClient $client = null)
     {
         $this->apiKey = $apiKey;
-        $this->client = $client ?: $this->setClient();
+
+        $this->setClient($client);
     }
 
-    public function setClient(): HttpClient
+    public function setClient(HttpClient $client = null): self
     {
-        return new HttpClient([
+        $this->client = $client ?: new HttpClient([
             'base_uri'    => 'https://api.spinupwp.app/v1/',
             'http_errors' => false,
             'headers'     => [
@@ -37,8 +38,18 @@ class SpinupWp
                 'Content-Type'  => 'application/json',
             ],
         ]);
+
+        return $this;
     }
 
+    public function getClient(): HttpClient
+    {
+        return $this->client;
+    }
+
+    /**
+     * @return mixed|void
+     */
     public function __get(string $name)
     {
         if (isset($this->endpoints[$name])) {
@@ -48,7 +59,7 @@ class SpinupWp
         $class = $this->buildEndpointClass($name);
 
         if (class_exists($class)) {
-            $this->endpoints[$name] = new $class($this->client, $this);
+            $this->endpoints[$name] = new $class($this);
 
             return $this->endpoints[$name];
         }

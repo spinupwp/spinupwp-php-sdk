@@ -5,6 +5,7 @@ use DeliciousBrains\SpinupWp\Exceptions\NotFoundException;
 use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
 use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
 use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
+use DeliciousBrains\SpinupWp\Resources\Event as EventResource;
 use DeliciousBrains\SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
@@ -13,14 +14,16 @@ use PHPUnit\Framework\TestCase;
 class SiteTest extends TestCase
 {
     public SpinupWp $spinupwp;
+
     public Site $siteEndpoint;
+
     public Client $client;
 
     public function setUp(): void
     {
-        $this->spinupwp     = Mockery::mock(SpinupWp::class);
         $this->client       = Mockery::mock(Client::class);
-        $this->siteEndpoint = new Site($this->client, $this->spinupwp);
+        $this->spinupwp     = new SpinupWp('123', $this->client);
+        $this->siteEndpoint = new Site($this->spinupwp);
     }
 
     public function test_get_request(): void
@@ -49,7 +52,7 @@ class SiteTest extends TestCase
             'form_params' => [
                 'domain'    => 'hellfish.media',
                 'server_id' => 1,
-            ]
+            ],
         ])->andReturn(
             new Response(200, [], '{"data": {"domain": "hellfish.media"}}')
         );
@@ -72,13 +75,13 @@ class SiteTest extends TestCase
         $this->client->shouldReceive('request')->once()->with('POST', 'sites', [
             'form_params' => [
                 'server_id' => 1,
-            ]
+            ],
         ])->andReturn(
             new Response(422, [], '{"domain": ["The domain is required."]}')
         );
 
         try {
-            (new Site($this->client, $this->spinupwp))->create(1, []);
+            (new Site($this->spinupwp))->create(1, []);
         } catch (ValidationException $e) {
             //
         }
@@ -94,7 +97,7 @@ class SiteTest extends TestCase
             new Response(404)
         );
 
-        (new Site($this->client, $this->spinupwp))->get(1);
+        (new Site($this->spinupwp))->get(1);
     }
 
     public function test_handling_401_errors(): void
@@ -105,7 +108,7 @@ class SiteTest extends TestCase
             new Response(401)
         );
 
-        (new Site($this->client, $this->spinupwp))->get(1);
+        (new Site($this->spinupwp))->get(1);
     }
 
     public function test_handling_429_errors(): void
@@ -116,6 +119,6 @@ class SiteTest extends TestCase
             new Response(429)
         );
 
-        (new Site($this->client, $this->spinupwp))->get(1);
+        (new Site($this->spinupwp))->get(1);
     }
 }

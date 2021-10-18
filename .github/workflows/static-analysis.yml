@@ -1,9 +1,9 @@
-name: Phpunit
+name: Phpstan
 
 on: [push]
 
 jobs:
-  phpunit:
+  phpstan:
     runs-on: ubuntu-latest
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
@@ -14,5 +14,5 @@ jobs:
       - name: Install Dependencies via Composer
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - name: Run phpunit
-        run: composer test
+      - name: Run phpstan
+        run: composer phpstan

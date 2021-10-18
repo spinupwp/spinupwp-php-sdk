@@ -2,33 +2,48 @@
 
 namespace DeliciousBrains\SpinupWp\Resources;
 
-use DeliciousBrains\SpinupWp\Endpoints\Endpoint;
 use DeliciousBrains\SpinupWp\SpinupWp;
 
-abstract class Resource
+class Resource
 {
     protected array $attributes;
 
-    protected Endpoint $endpoint;
+    protected ?int $eventId = null;
 
-    public SpinupWp $spinupwp;
+    protected SpinupWp $spinupwp;
 
-    public function __construct(array $attributes, Endpoint $endpoint, SpinupWp $spinupwp)
+    public function __construct(array $payload, SpinupWp $spinupwp)
     {
-        $this->attributes = $attributes;
-        $this->endpoint   = $endpoint;
+        $this->attributes = $payload['data'] ?? [];
+        $this->eventId    = $payload['event_id'] ?? null;
         $this->spinupwp   = $spinupwp;
 
         $this->fill();
     }
 
-    protected function fill()
+    public function toArray(): array
+    {
+        return $this->attributes;
+    }
+
+    protected function fill(): void
     {
         foreach ($this->attributes as $key => $value) {
             $this->{$key} = $value;
         }
-        if(property_exists($this,'event_id') && $this->event_id) {
-            $this->event = $this->spinupwp->events->get($this->event_id);
+    }
+
+    public function eventId(): ?int
+    {
+        return $this->eventId;
+    }
+
+    public function event(): ?Event
+    {
+        if (!$this->eventId) {
+            return null;
         }
+
+        return $this->spinupwp->events->get($this->eventId);
     }
 }
