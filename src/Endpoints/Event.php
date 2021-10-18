@@ -10,6 +10,6 @@ class Event extends Endpoint
     {
         $event = $this->getRequest("events/{$id}");
 
-        return new EventResource($event['data'], $this);
+        return new EventResource($event, $this->spinupwp);
     }
 }

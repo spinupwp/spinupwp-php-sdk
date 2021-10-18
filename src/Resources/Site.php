@@ -6,9 +6,6 @@ class Site extends Resource
 {
     public function delete(): ?int
     {
-        if (method_exists($this->endpoint, 'delete')) {
-            return $this->endpoint->delete($this->id);
-        }
-        return null;
+        return $this->spinupwp->sites->delete($this->id);
     }
 }

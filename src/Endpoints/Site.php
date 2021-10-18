@@ -18,7 +18,7 @@ class Site extends Endpoint
     {
         $site = $this->getRequest("sites/{$id}");
 
-        return new SiteResource($site['data'], $this);
+        return new SiteResource($site, $this->spinupwp);
     }
 
     public function create(int $serverId, array $data, bool $wait = false): SiteResource
@@ -29,7 +29,7 @@ class Site extends Endpoint
 
         if ($wait) {
             return $this->wait(function () use ($site) {
-                $event = (new Event($this->client))->get($site['event_id']);
+                $event = $this->spinupwp->events->get($site['event_id']);
 
                 if (!in_array($event->status, ['deployed', 'failed'])) {
                     return false;
@@ -39,7 +39,7 @@ class Site extends Endpoint
             });
         }
 
-        return new SiteResource($site['data'], $this);
+        return new SiteResource($site, $this->spinupwp);
     }
 
     public function delete(int $id): int

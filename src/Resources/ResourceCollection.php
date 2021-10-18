@@ -4,6 +4,7 @@ namespace DeliciousBrains\SpinupWp\Resources;
 
 use Countable;
 use DeliciousBrains\SpinupWp\Endpoints\Endpoint;
+use DeliciousBrains\SpinupWp\SpinupWp;
 use Generator;
 use IteratorAggregate;
 
@@ -15,15 +16,18 @@ class ResourceCollection implements Countable, IteratorAggregate
 
     protected Endpoint $endpoint;
 
+    public SpinupWp $spinupwp;
+
     protected int $page;
 
     protected array $data;
 
-    public function __construct(array $payload, string $class, Endpoint $endpoint, int $page = 1)
+    public function __construct(array $payload, string $class, Endpoint $endpoint, SpinupWp $spinupwp, int $page = 1)
     {
         $this->payload  = $payload;
         $this->class    = $class;
         $this->endpoint = $endpoint;
+        $this->spinupwp = $spinupwp;
         $this->page     = $page;
 
         $this->mapResourceClass();
@@ -32,7 +36,7 @@ class ResourceCollection implements Countable, IteratorAggregate
     protected function mapResourceClass(): void
     {
         $this->data = array_map(function ($data) {
-            return new $this->class($data, $this->endpoint);
+            return new $this->class(['data' => $data], $this->spinupwp);
         }, $this->payload['data']);
     }
 
