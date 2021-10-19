@@ -46,6 +46,16 @@ class SiteTest extends TestCase
         $this->assertCount(2, $sites);
     }
 
+    public function test_listForServer_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('GET', 'sites?server_id=1&page=1', [])->andReturn(
+            new Response(200, [], '{"data": [{"domain": "hellfish.media"}, {"domain": "staging.hellfish.media"}], "pagination": {"previous": null, "next": null, "count": 2}}')
+        );
+
+        $sites = $this->siteEndpoint->listForServer(1);
+        $this->assertCount(2, $sites);
+    }
+
     public function test_create_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites', [
