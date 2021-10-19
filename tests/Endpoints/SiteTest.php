@@ -70,6 +70,15 @@ class SiteTest extends TestCase
         $this->assertEquals(100, $this->siteEndpoint->delete(1));
     }
 
+    public function test_git_deploy_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/git/deploy', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->gitDeploy(1));
+    }
+
     public function test_handling_validation_errors(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites', [
