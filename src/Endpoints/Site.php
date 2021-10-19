@@ -55,4 +55,11 @@ class Site extends Endpoint
 
         return $request['event_id'];
     }
+
+    public function gitDeploy(int $id): int
+    {
+        $request = $this->postRequest("sites/{$id}/git/deploy");
+
+        return $request['event_id'];
+    }
 }
