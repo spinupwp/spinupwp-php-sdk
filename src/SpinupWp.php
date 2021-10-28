@@ -42,6 +42,13 @@ class SpinupWp
         return $this;
     }
 
+    public function setApiKey(string $apiKey): self
+    {
+        $this->apiKey = $apiKey;
+
+        return $this;
+    }
+
     public function getClient(): HttpClient
     {
         return $this->client;
