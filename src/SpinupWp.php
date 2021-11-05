@@ -20,11 +20,18 @@ class SpinupWp
 
     protected array $endpoints = [];
 
-    public function __construct(string $apiKey, HttpClient $client = null)
+    public function __construct(string $apiKey = null, HttpClient $client = null)
+    {
+        $this->apiKey = $apiKey ?: '';
+
+        $this->setClient($client);
+    }
+
+    public function setApiKey(string $apiKey): self
     {
         $this->apiKey = $apiKey;
 
-        $this->setClient($client);
+        return $this;
     }
 
     public function setClient(HttpClient $client = null): self
