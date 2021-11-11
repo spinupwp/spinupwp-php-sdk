@@ -62,4 +62,11 @@ class Site extends Endpoint
 
         return $request['event_id'];
     }
+
+    public function purgePageCache(int $id): int
+    {
+        $request = $this->postRequest("sites/{$id}/page-cache/purge");
+
+        return $request['event_id'];
+    }
 }

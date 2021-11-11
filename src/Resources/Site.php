@@ -13,4 +13,9 @@ class Site extends Resource
     {
         return $this->spinupwp->sites->gitDeploy($this->id);
     }
+
+    public function purgePageCache(): int
+    {
+        return $this->spinupwp->sites->purgePageCache($this->id);
+    }
 }
