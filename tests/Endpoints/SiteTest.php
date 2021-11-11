@@ -89,6 +89,33 @@ class SiteTest extends TestCase
         $this->assertEquals(100, $this->siteEndpoint->gitDeploy(1));
     }
 
+    public function test_purge_page_cache_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/page-cache/purge', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->purgePageCache(1));
+    }
+
+    public function test_purge_object_cache_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/object-cache/purge', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->purgeObjectCache(1));
+    }
+
+    public function test_correct_file_permissions(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/file-permissions/correct', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->correctFilePermissions(1));
+    }
+
     public function test_handling_validation_errors(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites', [
