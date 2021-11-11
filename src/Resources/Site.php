@@ -18,4 +18,9 @@ class Site extends Resource
     {
         return $this->spinupwp->sites->purgePageCache($this->id);
     }
+
+    public function purgeObjectCache(): int
+    {
+        return $this->spinupwp->sites->purgeObjectCache($this->id);
+    }
 }
