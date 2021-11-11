@@ -23,4 +23,9 @@ class Site extends Resource
     {
         return $this->spinupwp->sites->purgeObjectCache($this->id);
     }
+
+    public function correctFilePermissions(): int
+    {
+        return $this->spinupwp->sites->correctFilePermissions($this->id);
+    }
 }
