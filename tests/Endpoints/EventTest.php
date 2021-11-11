@@ -21,4 +21,18 @@ class EventTest extends TestCase
         $event = $eventEndpoint->get(1);
         $this->assertEquals('Creating site hellfish.media', $event->name);
     }
+
+    public function test_list_request(): void
+    {
+        $client        = Mockery::mock(Client::class);
+        $spinupwp      = new SpinupWp('123', $client);
+        $eventEndpoint = new Event($spinupwp);
+
+        $client->shouldReceive('request')->once()->with('GET', 'events?page=1', [])->andReturn(
+            new Response(200, [], '{"data": [{"name": "Creating site hellfish.media"}, {"name": "Deleting site hellfish.media"}], "pagination": {"previous": null, "next": null, "count": 2}}')
+        );
+
+        $events = $eventEndpoint->list();
+        $this->assertCount(2, $events);
+    }
 }
