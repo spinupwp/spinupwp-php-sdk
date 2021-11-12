@@ -56,6 +56,9 @@ $site->gitDeploy();
 
 ### Events
 ```php
+// Return a collection of events
+$events = $spinupwp->events->list();
+
 // Return a single event
 $event = $spinupwp->events->get($eventId);
 ```
