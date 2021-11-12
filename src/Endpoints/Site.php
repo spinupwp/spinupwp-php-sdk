@@ -62,4 +62,25 @@ class Site extends Endpoint
 
         return $request['event_id'];
     }
+
+    public function purgePageCache(int $id): int
+    {
+        $request = $this->postRequest("sites/{$id}/page-cache/purge");
+
+        return $request['event_id'];
+    }
+
+    public function purgeObjectCache(int $id): int
+    {
+        $request = $this->postRequest("sites/{$id}/object-cache/purge");
+
+        return $request['event_id'];
+    }
+
+    public function correctFilePermissions(int $id): int
+    {
+        $request = $this->postRequest("sites/{$id}/file-permissions/correct");
+
+        return $request['event_id'];
+    }
 }
