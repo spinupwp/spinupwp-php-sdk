@@ -44,6 +44,15 @@ $eventId = $spinupwp->sites->delete($siteId);
 
 // Run a git deployment
 $eventId = $spinupwp->sites->gitDeploy($siteId);
+
+// Purge a site's page cache
+$eventId = $spinupwp->sites->purgePageCache($siteId);
+
+// Purge a site's object cache
+$eventId = $spinupwp->sites->purgeObjectCache($siteId);
+
+// Reset a site's file permissions
+$eventId = $spinupwp->sites->correctFilePermissions($siteId);
 ```
 On a `Site` instance you may also call:
 ```php
@@ -52,6 +61,15 @@ $site->delete();
 
 // Run a git deployment
 $site->gitDeploy();
+
+// Purge a site's page cache
+$site->purgePageCache();
+
+// Purge a site's object cache
+$site->purgeObjectCache();
+
+// Reset a site's file permissions
+$site->correctFilePermissions();
 ````
 
 ### Events
