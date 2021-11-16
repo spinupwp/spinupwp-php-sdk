@@ -85,4 +85,13 @@ class ServerTest extends TestCase
 
         $this->assertEquals(100, $this->serverEndpoint->restartPhp(1));
     }
+
+    public function test_restart_mysql(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'servers/1/services/mysql/restart', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->serverEndpoint->restartMysql(1));
+    }
 }

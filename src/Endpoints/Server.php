@@ -41,4 +41,11 @@ class Server extends Endpoint
 
         return $request['event_id'];
     }
+
+    public function restartMysql(int $id): int
+    {
+        $request = $this->postRequest("servers/{$id}/services/mysql/restart");
+
+        return $request['event_id'];
+    }
 }
