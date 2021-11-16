@@ -23,4 +23,9 @@ class Server extends Resource
     {
         return $this->spinupwp->servers->restartPhp($this->id);
     }
+
+    public function restartMysql(): int
+    {
+        return $this->spinupwp->servers->restartMysql($this->id);
+    }
 }
