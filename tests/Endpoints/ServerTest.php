@@ -76,4 +76,13 @@ class ServerTest extends TestCase
 
         $this->assertEquals(100, $this->serverEndpoint->restartNginx(1));
     }
+
+    public function test_restart_php(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'servers/1/services/php/restart', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->serverEndpoint->restartPhp(1));
+    }
 }

@@ -34,4 +34,11 @@ class Server extends Endpoint
 
         return $request['event_id'];
     }
+
+    public function restartPhp(int $id): int
+    {
+        $request = $this->postRequest("servers/{$id}/services/php/restart");
+
+        return $request['event_id'];
+    }
 }
