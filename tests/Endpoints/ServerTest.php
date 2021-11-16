@@ -68,4 +68,17 @@ class ServerTest extends TestCase
 
         $this->assertEquals(100, $serverEndpoint->reboot(1));
     }
+
+    public function test_restart_nginx(): void
+    {
+        $client         = Mockery::mock(Client::class);
+        $spinupwp       = new SpinupWp('123', $client);
+        $serverEndpoint = new Server($spinupwp);
+
+        $client->shouldReceive('request')->once()->with('POST', 'servers/1/services/nginx/restart', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $serverEndpoint->restartNginx(1));
+    }
 }

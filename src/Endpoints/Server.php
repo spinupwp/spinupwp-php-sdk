@@ -27,4 +27,11 @@ class Server extends Endpoint
 
         return $request['event_id'];
     }
+
+    public function restartNginx(int $id): int
+    {
+        $request = $this->postRequest("servers/{$id}/services/nginx/restart");
+
+        return $request['event_id'];
+    }
 }
