@@ -55,4 +55,17 @@ class ServerTest extends TestCase
 
         $sites = $server->sites();
     }
+
+    public function test_server_restart_request(): void
+    {
+        $client         = Mockery::mock(Client::class);
+        $spinupwp       = new SpinupWp('123', $client);
+        $serverEndpoint = new Server($spinupwp);
+
+        $client->shouldReceive('request')->once()->with('POST', 'servers/1/reboot', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $serverEndpoint->reboot(1));
+    }
 }

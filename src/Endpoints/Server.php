@@ -20,4 +20,11 @@ class Server extends Endpoint
 
         return new ServerResource($server, $this->spinupwp);
     }
+
+    public function reboot(int $id): int
+    {
+        $request = $this->postRequest("servers/{$id}/reboot");
+
+        return $request['event_id'];
+    }
 }
