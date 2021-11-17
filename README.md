@@ -26,6 +26,35 @@ $servers = $spinupwp->servers->list();
 
 // Return a single server
 $server = $spinupwp->servers->get($serverId);
+
+// Reboot a server
+$eventId = $spinupwp->servers->reboot($serverId);
+
+// Restart the Nginx service on a server
+$eventId = $spinupwp->servers->restartNginx($serverId);
+
+// Restart all versions of the PHP-FPM service installed on a server
+$eventId = $spinupwp->servers->restartPhp($serverId);
+
+// Restart the MySQL or MariaDB service on a server
+$eventId = $spinupwp->servers->restartMysql($serverId);
+```
+On a `Server` instance you may also call:
+```php
+// Return a collection of this server's sites
+$sites = $server->sites();
+
+// Reboot the current server
+$server->reboot();
+
+// Restart the Nginx service on the current server
+$server->restartNginx();
+
+// Restart all versions of the PHP-FPM service installed on the current server
+$server->restartPhp();
+
+// Restart the MySQL or MariaDB service on the current server
+$server->restartMysql();
 ```
 
 ### Sites
