@@ -49,7 +49,7 @@ class ServerTest extends TestCase
             new Response(200, [], '{"data": {"id": 1, "name": "hellfish-media"}}')
         );
 
-        $this->client->shouldReceive('request')->once()->with('GET', 'sites?server_id=1&page=1', [])->andReturn(
+        $this->client->shouldReceive('request')->once()->with('GET', 'sites?page=1&server_id=1', [])->andReturn(
             new Response(200, [], '{"data": [{"domain": "hellfish.media"}, {"domain": "staging.hellfish.media"}], "pagination": {"previous": null, "next": null, "count": 2}}')
         );
 
