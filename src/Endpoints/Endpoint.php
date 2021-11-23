@@ -35,7 +35,7 @@ abstract class Endpoint
             $this->handleRequestError($response);
         }
 
-        $responseBody = (string)$response->getBody();
+        $responseBody = (string) $response->getBody();
 
         return json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
     }
@@ -51,7 +51,7 @@ abstract class Endpoint
         }
 
         if ($response->getStatusCode() === 422) {
-            $responseBody = (string)$response->getBody();
+            $responseBody = (string) $response->getBody();
 
             throw new ValidationException(json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR));
         }
@@ -60,7 +60,7 @@ abstract class Endpoint
             throw new RateLimitException();
         }
 
-        throw new Exception((string)$response->getBody());
+        throw new Exception((string) $response->getBody());
     }
 
     protected function getRequest(string $uri, array $parameters = []): array
