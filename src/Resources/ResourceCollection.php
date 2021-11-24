@@ -52,7 +52,7 @@ class ResourceCollection implements Countable, IteratorAggregate
             return;
         }
 
-        while($this->paginator->hasNext()) {
+        while ($this->paginator->hasNext()) {
             $nextResources = $this->mapResourceClass($this->paginator->nextPage());
 
             foreach ($nextResources as $resource) {

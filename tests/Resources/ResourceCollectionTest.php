@@ -23,8 +23,8 @@ class ResourceCollectionTest extends TestCase
     {
         parent::setUp();
 
-        $this->payload        = [
-            'data'       => [
+        $this->payload = [
+            'data' => [
                 ['name' => 'hellfish-media'],
                 ['name' => 'staging-hellfish-media'],
             ],

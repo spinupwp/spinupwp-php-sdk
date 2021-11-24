@@ -9,9 +9,13 @@ use DeliciousBrains\SpinupWp\SpinupWp;
 class Paginator implements Countable
 {
     protected Endpoint $endpoint;
+
     protected ?string $previousPage;
+
     protected ?string $nextPage;
+
     protected int $count;
+
     protected array $parameters;
 
     public function __construct(Endpoint $endpoint, array $paginationData, array $parameters = [])
