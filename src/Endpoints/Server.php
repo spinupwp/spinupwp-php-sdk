@@ -13,7 +13,11 @@ class Server extends Endpoint
             'page' => $page,
         ], $parameters));
 
-        return $this->transformCollection($servers, ServerResource::class, $page);
+        return $this->transformCollection(
+            $servers['data'],
+            ServerResource::class,
+            $this->getPaginator($servers['pagination'], $parameters),
+        );
     }
 
     public function get(int $id): ServerResource

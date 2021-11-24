@@ -1,6 +1,7 @@
 <?php
 
 use DeliciousBrains\SpinupWp\Endpoints\Server as ServerEndpoint;
+use DeliciousBrains\SpinupWp\Resources\Paginator;
 use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
 use DeliciousBrains\SpinupWp\Resources\Server as ServerResource;
 use DeliciousBrains\SpinupWp\SpinupWp;
@@ -22,15 +23,15 @@ class ResourceCollectionTest extends TestCase
     {
         parent::setUp();
 
-        $this->payload = [
-            'data' => [
+        $this->payload        = [
+            'data'       => [
                 ['name' => 'hellfish-media'],
                 ['name' => 'staging-hellfish-media'],
             ],
             'pagination' => [
                 'previous' => null,
                 'next'     => null,
-                'count'    => 2,
+                'count'    => 3,
             ],
         ];
         $this->client         = Mockery::mock(Client::class);
@@ -40,21 +41,24 @@ class ResourceCollectionTest extends TestCase
 
     public function test_resources_are_mapped(): void
     {
-        $servers = (new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp));
+        $paginator = new Paginator($this->serverEndpoint, $this->payload['pagination']);
+        $servers   = (new ResourceCollection($this->payload['data'], ServerResource::class, $this->spinupwp, $paginator));
 
         $this->assertInstanceOf(ServerResource::class, $servers->toArray()[0]);
     }
 
     public function test_resources_are_countable(): void
     {
-        $servers = new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp);
+        $paginator = new Paginator($this->serverEndpoint, $this->payload['pagination']);
+        $servers   = new ResourceCollection($this->payload['data'], ServerResource::class, $this->spinupwp, $paginator);
 
-        $this->assertEquals(2, $servers->count());
+        $this->assertEquals(3, $servers->count());
     }
 
     public function test_resources_are_arrayable(): void
     {
-        $servers = (new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp))->toArray();
+        $paginator = new Paginator($this->serverEndpoint, $this->payload['pagination']);
+        $servers   = (new ResourceCollection($this->payload['data'], ServerResource::class, $this->spinupwp, $paginator))->toArray();
 
         $this->assertIsArray($servers);
         $this->assertEquals('hellfish-media', $servers[0]->name);
@@ -62,22 +66,16 @@ class ResourceCollectionTest extends TestCase
 
     public function test_resources_can_be_iterated(): void
     {
-        $this->payload['pagination']['next'] = 'https://api.spinupwp.app/v1/servers';
+        $this->payload['pagination']['next'] = 'https://api.spinupwp.app/v1/servers?page=2';
 
         $this->client->shouldReceive('request')->once()->with('GET', 'servers?page=2', [])->andReturn(
             new Response(200, [], '{"data": [{"name": "dev-hellfish-media"}], "pagination": {"previous": null, "next": null, "count": 3}}')
         );
 
-        $servers = (new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp))->toArray();
+        $paginator = new Paginator($this->serverEndpoint, $this->payload['pagination']);
+        $servers   = (new ResourceCollection($this->payload['data'], ServerResource::class, $this->spinupwp, $paginator))->toArray();
 
         $this->assertCount(3, $servers);
         $this->assertEquals('dev-hellfish-media', $servers[2]->name);
-    }
-
-    public function test_resources_have_payload(): void
-    {
-        $servers = new ResourceCollection($this->payload, ServerResource::class, $this->serverEndpoint, $this->spinupwp);
-
-        $this->assertEquals($this->payload, $servers->payload());
     }
 }

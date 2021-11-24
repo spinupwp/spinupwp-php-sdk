@@ -13,7 +13,11 @@ class Site extends Endpoint
             'page' => $page,
         ], $parameters));
 
-        return $this->transformCollection($sites, SiteResource::class, $page);
+        return $this->transformCollection(
+            $sites['data'],
+            SiteResource::class,
+            $this->getPaginator($sites['pagination'], $parameters),
+        );
     }
 
     public function listForServer(int $serverId, int $page = 1, array $parameters = []): ResourceCollection

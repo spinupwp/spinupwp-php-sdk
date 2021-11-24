@@ -14,6 +14,8 @@ use GuzzleHttp\Client as HttpClient;
  */
 class SpinupWp
 {
+    public const API_URL = 'https://api.spinupwp.app/v1/';
+
     protected string $apiKey;
 
     protected HttpClient $client;
@@ -42,7 +44,7 @@ class SpinupWp
     public function setClient(HttpClient $client = null): self
     {
         $this->client = $client ?: new HttpClient([
-            'base_uri'    => 'https://api.spinupwp.app/v1/',
+            'base_uri'    => self::API_URL,
             'http_errors' => false,
             'headers'     => [
                 'Authorization' => 'Bearer ' . $this->apiKey,

@@ -13,7 +13,11 @@ class Event extends Endpoint
             'page' => $page,
         ], $parameters));
 
-        return $this->transformCollection($events, EventResource::class, $page);
+        return $this->transformCollection(
+            $events['data'],
+            EventResource::class,
+            $this->getPaginator($events['pagination'], $parameters),
+        );
     }
 
     public function get(int $id): EventResource
