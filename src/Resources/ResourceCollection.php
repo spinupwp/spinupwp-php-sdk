@@ -3,80 +3,61 @@
 namespace DeliciousBrains\SpinupWp\Resources;
 
 use Countable;
-use DeliciousBrains\SpinupWp\Endpoints\Endpoint;
 use DeliciousBrains\SpinupWp\SpinupWp;
 use Generator;
 use IteratorAggregate;
 
 class ResourceCollection implements Countable, IteratorAggregate
 {
-    protected array $payload;
-
     protected string $class;
-
-    protected Endpoint $endpoint;
 
     public SpinupWp $spinupwp;
 
-    protected int $page;
+    protected ?Paginator $paginator;
 
-    protected array $data;
+    protected array $resources = [];
 
-    public function __construct(array $payload, string $class, Endpoint $endpoint, SpinupWp $spinupwp, int $page = 1)
+    public function __construct(array $resources, string $class, SpinupWp $spinupwp, ?Paginator $paginator = null)
     {
-        $this->payload  = $payload;
-        $this->class    = $class;
-        $this->endpoint = $endpoint;
-        $this->spinupwp = $spinupwp;
-        $this->page     = $page;
+        $this->class     = $class;
+        $this->spinupwp  = $spinupwp;
+        $this->paginator = $paginator;
 
-        $this->mapResourceClass();
+        $this->resources = $this->mapResourceClass($resources);
     }
 
-    protected function mapResourceClass(): void
+    protected function mapResourceClass(array $resources): array
     {
-        $this->data = array_map(function ($data) {
-            return new $this->class(['data' => $data], $this->spinupwp);
-        }, $this->payload['data']);
-    }
-
-    protected function hasNext(): bool
-    {
-        return !empty($this->payload['pagination']['next']);
-    }
-
-    protected function hasPrevious(): bool
-    {
-        return !empty($this->payload['pagination']['previous']);
-    }
-
-    public function payload(): array
-    {
-        return $this->payload;
+        return array_map(function ($resource) {
+            return new $this->class(['data' => $resource], $this->spinupwp);
+        }, $resources);
     }
 
     public function count(): int
     {
-        return $this->payload['pagination']['count'];
+        if ($this->paginator instanceof Paginator) {
+            return $this->paginator->count();
+        }
+
+        return count($this->resources);
     }
 
     public function getIterator(): Generator
     {
-        foreach ($this->data as $resource) {
+        foreach ($this->resources as $resource) {
             yield $resource;
         }
 
-        while ($this->hasNext()) {
-            if (!method_exists($this->endpoint, 'list')) {
-                return;
-            }
+        if (!$this->paginator) {
+            return;
+        }
 
-            $nextPage = $this->endpoint->list(++$this->page);
+        while ($this->paginator->hasNext()) {
+            $nextResources = $this->mapResourceClass($this->paginator->nextPage());
 
-            $this->payload = $nextPage->payload();
-            $this->mapResourceClass();
+            foreach ($nextResources as $resource) {
+                $this->resources[] = $resource;
 
-            foreach ($this->data as $resource) {
                 yield $resource;
             }
         }

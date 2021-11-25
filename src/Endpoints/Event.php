@@ -7,11 +7,17 @@ use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
 
 class Event extends Endpoint
 {
-    public function list(int $page = 1): ResourceCollection
+    public function list(int $page = 1, array $parameters = []): ResourceCollection
     {
-        $events = $this->getRequest("events?page={$page}");
+        $events = $this->getRequest('events', array_merge([
+            'page' => $page,
+        ], $parameters));
 
-        return $this->transformCollection($events, EventResource::class, $page);
+        return $this->transformCollection(
+            $events['data'],
+            EventResource::class,
+            $this->getPaginator($events['pagination'], $parameters),
+        );
     }
 
     public function get(int $id): EventResource

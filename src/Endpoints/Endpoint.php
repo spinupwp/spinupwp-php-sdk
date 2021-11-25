@@ -7,6 +7,7 @@ use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
 use DeliciousBrains\SpinupWp\Exceptions\TimeoutException;
 use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
 use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
+use DeliciousBrains\SpinupWp\Resources\Paginator;
 use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
 use DeliciousBrains\SpinupWp\SpinupWp;
 use Exception;
@@ -63,24 +64,33 @@ abstract class Endpoint
         throw new Exception((string) $response->getBody());
     }
 
-    protected function getRequest(string $uri): array
+    public function getRequest(string $uri, array $parameters = []): array
     {
+        if ($parameters) {
+            $uri .= '?' . http_build_query($parameters);
+        }
+
         return $this->request('GET', $uri);
     }
 
-    protected function postRequest(string $uri, array $payload = []): array
+    public function postRequest(string $uri, array $payload = []): array
     {
         return $this->request('POST', $uri, $payload);
     }
 
-    protected function deleteRequest(string $uri, array $payload = []): array
+    public function deleteRequest(string $uri, array $payload = []): array
     {
         return $this->request('DELETE', $uri, $payload);
     }
 
-    protected function transformCollection(array $payload, string $class, int $page): ResourceCollection
+    protected function transformCollection(array $data, string $class, Paginator $paginator = null): ResourceCollection
     {
-        return new ResourceCollection($payload, $class, $this, $this->spinupwp, $page);
+        return new ResourceCollection($data, $class, $this->spinupwp, $paginator);
+    }
+
+    protected function getPaginator(array $pagination, array $parameters = []): Paginator
+    {
+        return new Paginator($this, $pagination, $parameters);
     }
 
     /**

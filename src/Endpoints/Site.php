@@ -7,18 +7,24 @@ use DeliciousBrains\SpinupWp\Resources\Site as SiteResource;
 
 class Site extends Endpoint
 {
-    public function list(int $page = 1): ResourceCollection
+    public function list(int $page = 1, array $parameters = []): ResourceCollection
     {
-        $sites = $this->getRequest("sites?page={$page}");
+        $sites = $this->getRequest('sites', array_merge([
+            'page' => $page,
+        ], $parameters));
 
-        return $this->transformCollection($sites, SiteResource::class, $page);
+        return $this->transformCollection(
+            $sites['data'],
+            SiteResource::class,
+            $this->getPaginator($sites['pagination'], $parameters),
+        );
     }
 
-    public function listForServer(int $serverId, int $page = 1): ResourceCollection
+    public function listForServer(int $serverId, int $page = 1, array $parameters = []): ResourceCollection
     {
-        $sites = $this->getRequest("sites?server_id={$serverId}&page={$page}");
-
-        return $this->transformCollection($sites, SiteResource::class, $page);
+        return $this->list($page, array_merge([
+            'server_id' => $serverId,
+        ], $parameters));
     }
 
     public function get(int $id): SiteResource
