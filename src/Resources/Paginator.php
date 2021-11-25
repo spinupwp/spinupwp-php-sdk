@@ -10,9 +10,9 @@ class Paginator implements Countable
 {
     protected Endpoint $endpoint;
 
-    protected ?string $previousPage;
+    protected string $previousPage;
 
-    protected ?string $nextPage;
+    protected string $nextPage;
 
     protected int $count;
 
@@ -28,8 +28,8 @@ class Paginator implements Countable
 
     protected function fill(array $paginationData): void
     {
-        $this->previousPage = $paginationData['previous'] ?? null;
-        $this->nextPage     = $paginationData['next'] ?? null;
+        $this->previousPage = (string) $paginationData['previous'];
+        $this->nextPage     = (string) $paginationData['next'];
         $this->count        = $paginationData['count'] ?? 0;
     }
 
@@ -45,8 +45,12 @@ class Paginator implements Countable
 
     public function nextPage(): array
     {
-        parse_str(parse_url($this->nextPage, PHP_URL_QUERY), $queryParameters);
-        $url = strtok($this->nextPage, '?'); // Remove query string
+        if (!$this->hasNext()) {
+            return [];
+        }
+
+        parse_str((string) parse_url($this->nextPage, PHP_URL_QUERY), $queryParameters);
+        $url = (string) strtok($this->nextPage, '?'); // Remove query string
         $uri = str_replace(SpinupWp::API_URL, '', $url);
 
         $response = $this->endpoint->getRequest($uri, array_merge($queryParameters, $this->parameters));
