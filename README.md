@@ -27,6 +27,9 @@ $servers = $spinupwp->servers->list();
 // Return a single server
 $server = $spinupwp->servers->get($serverId);
 
+// Delete a server
+$eventId = $spinupwp->servers->delete($serverId, $deleteOnProvider);
+
 // Reboot a server
 $eventId = $spinupwp->servers->reboot($serverId);
 
@@ -43,6 +46,9 @@ On a `Server` instance you may also call:
 ```php
 // Return a collection of this server's sites
 $sites = $server->sites();
+
+// Delete the current server
+$server->delete($deleteOnProvider);
 
 // Reboot the current server
 $server->reboot();
