@@ -27,6 +27,15 @@ class Server extends Endpoint
         return new ServerResource($server, $this->spinupwp);
     }
 
+    public function delete(int $id, bool $deleteOnProvider = false): int
+    {
+        $request = $this->deleteRequest("servers/{$id}", [
+            'delete_server_on_provider' => $deleteOnProvider,
+        ]);
+
+        return $request['event_id'];
+    }
+
     public function reboot(int $id): int
     {
         $request = $this->postRequest("servers/{$id}/reboot");

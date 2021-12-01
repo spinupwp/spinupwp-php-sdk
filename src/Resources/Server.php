@@ -9,6 +9,11 @@ class Server extends Resource
         return $this->spinupwp->sites->listForServer($this->id);
     }
 
+    public function delete(bool $deleteOnProvider = false): int
+    {
+        return $this->spinupwp->servers->delete($this->id, $deleteOnProvider);
+    }
+
     public function reboot(): int
     {
         return $this->spinupwp->servers->reboot($this->id);
