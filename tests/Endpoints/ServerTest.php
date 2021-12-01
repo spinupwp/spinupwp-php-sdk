@@ -43,6 +43,19 @@ class ServerTest extends TestCase
         $this->assertCount(2, $servers);
     }
 
+    public function test_delete_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'servers/1', [
+            'form_params' => [
+                'delete_server_on_provider' => false,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->serverEndpoint->delete(1));
+    }
+
     public function test_server_sites_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('GET', 'servers/1', [])->andReturn(
