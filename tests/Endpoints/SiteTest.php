@@ -85,7 +85,12 @@ class SiteTest extends TestCase
 
     public function test_delete_request(): void
     {
-        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1', [])->andReturn(
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1', [
+            'form_params' => [
+                'delete_database' => false,
+                'delete_backups'  => false,
+            ],
+        ])->andReturn(
             new Response(200, [], '{"event_id": 100}')
         );
 
