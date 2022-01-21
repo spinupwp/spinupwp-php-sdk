@@ -2,6 +2,7 @@
 
 namespace DeliciousBrains\SpinupWp\Endpoints;
 
+use DeliciousBrains\SpinupWp\Exceptions\AccessDeniedException;
 use DeliciousBrains\SpinupWp\Exceptions\NotFoundException;
 use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
 use DeliciousBrains\SpinupWp\Exceptions\TimeoutException;
@@ -45,6 +46,10 @@ abstract class Endpoint
     {
         if ($response->getStatusCode() === 401) {
             throw new UnauthorizedException();
+        }
+
+        if ($response->getStatusCode() === 403) {
+            throw new AccessDeniedException();
         }
 
         if ($response->getStatusCode() === 404) {
