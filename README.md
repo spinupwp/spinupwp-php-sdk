@@ -10,7 +10,7 @@ The SpinupWP PHP SDK provides an expressive interface for interacting with [Spin
 ## Installation
 To get started, require the package via [Composer](https://getcomposer.org):
 ```bash
-composer require deliciousbrains/spinupwp-php-sdk
+composer require spinupwp/spinupwp-php-sdk
 ```
 
 ## Usage

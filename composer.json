@@ -1,5 +1,5 @@
 {
-    "name": "deliciousbrains/spinupwp-php-sdk",
+    "name": "spinupwp/spinupwp-php-sdk",
     "description": "The official SpinupWP PHP SDK",
     "keywords": ["spinupwp", "api"],
     "license": "MIT",
