@@ -1,9 +1,9 @@
 <?php
 
-namespace DeliciousBrains\SpinupWp\Resources;
+namespace SpinupWp\Resources;
 
 use Countable;
-use DeliciousBrains\SpinupWp\SpinupWp;
+use SpinupWp\SpinupWp;
 use Generator;
 use IteratorAggregate;
 

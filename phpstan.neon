@@ -7,8 +7,8 @@ parameters:
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
     universalObjectCratesClasses:
-        - DeliciousBrains\SpinupWp\Resources\Resource
-        - DeliciousBrains\SpinupWp\Endpoints\Endpoint
+        - SpinupWp\Resources\Resource
+        - SpinupWp\Endpoints\Endpoint
     excludes_analyse:
         - vendor/*
         - tests/*

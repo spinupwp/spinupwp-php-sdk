@@ -1,7 +1,7 @@
 <?php
 
-use DeliciousBrains\SpinupWp\Endpoints\Event;
-use DeliciousBrains\SpinupWp\SpinupWp;
+use SpinupWp\Endpoints\Event;
+use SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;

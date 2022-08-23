@@ -1,7 +1,7 @@
 <?php
 
-use DeliciousBrains\SpinupWp\Endpoints\Server;
-use DeliciousBrains\SpinupWp\SpinupWp;
+use SpinupWp\Endpoints\Server;
+use SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Mockery\MockInterface;

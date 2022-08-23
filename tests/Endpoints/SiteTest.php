@@ -1,12 +1,12 @@
 <?php
 
-use DeliciousBrains\SpinupWp\Endpoints\Site;
-use DeliciousBrains\SpinupWp\Exceptions\NotFoundException;
-use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
-use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
-use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
-use DeliciousBrains\SpinupWp\Resources\Event as EventResource;
-use DeliciousBrains\SpinupWp\SpinupWp;
+use SpinupWp\Endpoints\Site;
+use SpinupWp\Exceptions\NotFoundException;
+use SpinupWp\Exceptions\RateLimitException;
+use SpinupWp\Exceptions\UnauthorizedException;
+use SpinupWp\Exceptions\ValidationException;
+use SpinupWp\Resources\Event as EventResource;
+use SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;

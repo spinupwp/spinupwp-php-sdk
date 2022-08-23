@@ -1,9 +1,9 @@
 <?php
 
-namespace DeliciousBrains\SpinupWp\Endpoints;
+namespace SpinupWp\Endpoints;
 
-use DeliciousBrains\SpinupWp\Resources\Event as EventResource;
-use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
+use SpinupWp\Resources\Event as EventResource;
+use SpinupWp\Resources\ResourceCollection;
 
 class Event extends Endpoint
 {

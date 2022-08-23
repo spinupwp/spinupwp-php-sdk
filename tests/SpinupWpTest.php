@@ -1,8 +1,8 @@
 <?php
 
-use DeliciousBrains\SpinupWp\Endpoints\Server;
-use DeliciousBrains\SpinupWp\Endpoints\Site;
-use DeliciousBrains\SpinupWp\SpinupWp;
+use SpinupWp\Endpoints\Server;
+use SpinupWp\Endpoints\Site;
+use SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 

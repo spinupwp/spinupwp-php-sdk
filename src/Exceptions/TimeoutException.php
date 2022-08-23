@@ -1,6 +1,6 @@
 <?php
 
-namespace DeliciousBrains\SpinupWp\Exceptions;
+namespace SpinupWp\Exceptions;
 
 use Exception;
 

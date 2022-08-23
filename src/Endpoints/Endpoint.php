@@ -1,16 +1,16 @@
 <?php
 
-namespace DeliciousBrains\SpinupWp\Endpoints;
+namespace SpinupWp\Endpoints;
 
-use DeliciousBrains\SpinupWp\Exceptions\AccessDeniedException;
-use DeliciousBrains\SpinupWp\Exceptions\NotFoundException;
-use DeliciousBrains\SpinupWp\Exceptions\RateLimitException;
-use DeliciousBrains\SpinupWp\Exceptions\TimeoutException;
-use DeliciousBrains\SpinupWp\Exceptions\UnauthorizedException;
-use DeliciousBrains\SpinupWp\Exceptions\ValidationException;
-use DeliciousBrains\SpinupWp\Resources\Paginator;
-use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
-use DeliciousBrains\SpinupWp\SpinupWp;
+use SpinupWp\Exceptions\AccessDeniedException;
+use SpinupWp\Exceptions\NotFoundException;
+use SpinupWp\Exceptions\RateLimitException;
+use SpinupWp\Exceptions\TimeoutException;
+use SpinupWp\Exceptions\UnauthorizedException;
+use SpinupWp\Exceptions\ValidationException;
+use SpinupWp\Resources\Paginator;
+use SpinupWp\Resources\ResourceCollection;
+use SpinupWp\SpinupWp;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 

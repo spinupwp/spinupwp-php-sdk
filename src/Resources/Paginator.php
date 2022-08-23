@@ -1,10 +1,10 @@
 <?php
 
-namespace DeliciousBrains\SpinupWp\Resources;
+namespace SpinupWp\Resources;
 
 use Countable;
-use DeliciousBrains\SpinupWp\Endpoints\Endpoint;
-use DeliciousBrains\SpinupWp\SpinupWp;
+use SpinupWp\Endpoints\Endpoint;
+use SpinupWp\SpinupWp;
 
 class Paginator implements Countable
 {

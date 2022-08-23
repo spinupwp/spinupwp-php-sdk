@@ -1,10 +1,10 @@
 <?php
 
-use DeliciousBrains\SpinupWp\Endpoints\Server as ServerEndpoint;
-use DeliciousBrains\SpinupWp\Resources\Paginator;
-use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
-use DeliciousBrains\SpinupWp\Resources\Server as ServerResource;
-use DeliciousBrains\SpinupWp\SpinupWp;
+use SpinupWp\Endpoints\Server as ServerEndpoint;
+use SpinupWp\Resources\Paginator;
+use SpinupWp\Resources\ResourceCollection;
+use SpinupWp\Resources\Server as ServerResource;
+use SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;

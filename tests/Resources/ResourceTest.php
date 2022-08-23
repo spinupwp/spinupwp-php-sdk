@@ -1,7 +1,7 @@
 <?php
 
-use DeliciousBrains\SpinupWp\Resources\Resource;
-use DeliciousBrains\SpinupWp\SpinupWp;
+use SpinupWp\Resources\Resource;
+use SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
