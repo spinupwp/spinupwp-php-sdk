@@ -27,6 +27,9 @@ $servers = $spinupwp->servers->list();
 // Return a single server
 $server = $spinupwp->servers->get($serverId);
 
+// Create and return a new server 
+$server = $spinupwp->servers->create([]);
+
 // Delete a server
 $eventId = $spinupwp->servers->delete($serverId, $deleteOnProvider);
 

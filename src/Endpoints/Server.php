@@ -27,6 +27,25 @@ class Server extends Endpoint
         return new ServerResource($server, $this->spinupwp);
     }
 
+    public function create(array $data, bool $wait = false): ServerResource
+    {
+        $server = $this->postRequest('servers', $data);
+
+        if ($wait) {
+            return $this->wait(function () use ($server) {
+                $event = $this->spinupwp->events->get($server['event_id']);
+
+                if (!in_array($event->status, ['deployed', 'failed'])) {
+                    return false;
+                }
+
+                return $this->get($server['data']['id']);
+            });
+        }
+
+        return new ServerResource($server, $this->spinupwp);
+    }
+
     public function delete(int $id, bool $deleteOnProvider = false): int
     {
         $request = $this->deleteRequest("servers/{$id}", [
