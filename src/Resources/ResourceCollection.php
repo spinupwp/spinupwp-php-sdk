@@ -1,11 +1,11 @@
 <?php
 
-namespace DeliciousBrains\SpinupWp\Resources;
+namespace SpinupWp\Resources;
 
 use Countable;
-use DeliciousBrains\SpinupWp\SpinupWp;
 use Generator;
 use IteratorAggregate;
+use SpinupWp\SpinupWp;
 
 class ResourceCollection implements Countable, IteratorAggregate
 {

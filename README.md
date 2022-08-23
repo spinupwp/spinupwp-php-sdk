@@ -16,7 +16,7 @@ composer require spinupwp/spinupwp-php-sdk
 ## Usage
 You can create an instance of the SpinupWP client like so:
 ```php
-$spinupwp = new DeliciousBrains\SpinupWp\SpinupWp('API_TOKEN');
+$spinupwp = new SpinupWp\SpinupWp('API_TOKEN');
 ```
 
 ### Servers

@@ -1,6 +1,6 @@
 <?php
 
-namespace DeliciousBrains\SpinupWp\Resources;
+namespace SpinupWp\Resources;
 
 class Event extends Resource
 {

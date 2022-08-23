@@ -1,11 +1,11 @@
 <?php
 
-namespace DeliciousBrains\SpinupWp;
+namespace SpinupWp;
 
-use DeliciousBrains\SpinupWp\Endpoints\Event;
-use DeliciousBrains\SpinupWp\Endpoints\Server;
-use DeliciousBrains\SpinupWp\Endpoints\Site;
 use GuzzleHttp\Client as HttpClient;
+use SpinupWp\Endpoints\Event;
+use SpinupWp\Endpoints\Server;
+use SpinupWp\Endpoints\Site;
 
 /**
  * @property Event $events
@@ -83,6 +83,6 @@ class SpinupWp
     {
         $name = ucfirst(substr($name, 0, -1));
 
-        return "\DeliciousBrains\SpinupWp\Endpoints\\{$name}";
+        return "\SpinupWp\Endpoints\\{$name}";
     }
 }

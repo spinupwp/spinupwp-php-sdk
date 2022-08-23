@@ -1,9 +1,9 @@
 <?php
 
-namespace DeliciousBrains\SpinupWp\Endpoints;
+namespace SpinupWp\Endpoints;
 
-use DeliciousBrains\SpinupWp\Resources\ResourceCollection;
-use DeliciousBrains\SpinupWp\Resources\Site as SiteResource;
+use SpinupWp\Resources\ResourceCollection;
+use SpinupWp\Resources\Site as SiteResource;
 
 class Site extends Endpoint
 {

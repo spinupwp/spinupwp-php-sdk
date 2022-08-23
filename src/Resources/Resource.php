@@ -1,8 +1,8 @@
 <?php
 
-namespace DeliciousBrains\SpinupWp\Resources;
+namespace SpinupWp\Resources;
 
-use DeliciousBrains\SpinupWp\SpinupWp;
+use SpinupWp\SpinupWp;
 
 class Resource
 {
