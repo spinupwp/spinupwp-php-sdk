@@ -1,13 +1,13 @@
 <?php
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use SpinupWp\Endpoints\Server as ServerEndpoint;
 use SpinupWp\Resources\Paginator;
 use SpinupWp\Resources\ResourceCollection;
 use SpinupWp\Resources\Server as ServerResource;
 use SpinupWp\SpinupWp;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 
 class ResourceCollectionTest extends TestCase
 {

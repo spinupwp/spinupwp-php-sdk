@@ -2,6 +2,8 @@
 
 namespace SpinupWp\Endpoints;
 
+use Exception;
+use Psr\Http\Message\ResponseInterface;
 use SpinupWp\Exceptions\AccessDeniedException;
 use SpinupWp\Exceptions\NotFoundException;
 use SpinupWp\Exceptions\RateLimitException;
@@ -11,8 +13,6 @@ use SpinupWp\Exceptions\ValidationException;
 use SpinupWp\Resources\Paginator;
 use SpinupWp\Resources\ResourceCollection;
 use SpinupWp\SpinupWp;
-use Exception;
-use Psr\Http\Message\ResponseInterface;
 
 abstract class Endpoint
 {

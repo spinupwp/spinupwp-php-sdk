@@ -1,10 +1,10 @@
 <?php
 
-use SpinupWp\Endpoints\Event;
-use SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
+use SpinupWp\Endpoints\Event;
+use SpinupWp\SpinupWp;
 
 class EventTest extends TestCase
 {

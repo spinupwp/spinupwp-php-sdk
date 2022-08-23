@@ -1,5 +1,8 @@
 <?php
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use SpinupWp\Endpoints\Site;
 use SpinupWp\Exceptions\NotFoundException;
 use SpinupWp\Exceptions\RateLimitException;
@@ -7,9 +10,6 @@ use SpinupWp\Exceptions\UnauthorizedException;
 use SpinupWp\Exceptions\ValidationException;
 use SpinupWp\Resources\Event as EventResource;
 use SpinupWp\SpinupWp;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 
 class SiteTest extends TestCase
 {

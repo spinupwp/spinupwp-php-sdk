@@ -1,11 +1,11 @@
 <?php
 
-use SpinupWp\Endpoints\Server;
-use SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
+use SpinupWp\Endpoints\Server;
+use SpinupWp\SpinupWp;
 
 class ServerTest extends TestCase
 {

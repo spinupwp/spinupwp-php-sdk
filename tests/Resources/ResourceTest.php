@@ -1,10 +1,10 @@
 <?php
 
-use SpinupWp\Resources\Resource;
-use SpinupWp\SpinupWp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
+use SpinupWp\Resources\Resource;
+use SpinupWp\SpinupWp;
 
 class ResourceTest extends TestCase
 {

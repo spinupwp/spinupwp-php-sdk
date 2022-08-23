@@ -3,9 +3,9 @@
 namespace SpinupWp\Resources;
 
 use Countable;
-use SpinupWp\SpinupWp;
 use Generator;
 use IteratorAggregate;
+use SpinupWp\SpinupWp;
 
 class ResourceCollection implements Countable, IteratorAggregate
 {
