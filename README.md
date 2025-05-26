@@ -119,6 +119,12 @@ $events = $spinupwp->events->list();
 $event = $spinupwp->events->get($eventId);
 ```
 
+### SSH Key
+```php
+// Return SpinupWP's SSH Public Key
+$key = $spinupwp->sshKeys->get();
+```
+
 ### Resource Collections
 When retrieving a list of resources, an instance of `ResourceCollection` is returned. This class handles fetching large lists of resources without having to paginate results and perform subsequent requests manually.
 ```php
