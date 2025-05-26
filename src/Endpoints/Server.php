@@ -29,21 +29,12 @@ class Server extends Endpoint
 
     public function create(array $data, bool $wait = false): ServerResource
     {
-        $server = $this->postRequest('servers', $data);
+        return $this->createServer('servers', $data, $wait);
+    }
 
-        if ($wait) {
-            return $this->wait(function () use ($server) {
-                $event = $this->spinupwp->events->get($server['event_id']);
-
-                if (!in_array($event->status, ['deployed', 'failed'])) {
-                    return false;
-                }
-
-                return $this->get($server['data']['id']);
-            });
-        }
-
-        return new ServerResource($server, $this->spinupwp);
+    public function createCustom(array $data, bool $wait = false): ServerResource
+    {
+        return $this->createServer('servers/custom', $data, $wait);
     }
 
     public function delete(int $id, bool $deleteOnProvider = false): int
@@ -81,5 +72,24 @@ class Server extends Endpoint
         $request = $this->postRequest("servers/{$id}/services/mysql/restart");
 
         return $request['event_id'];
+    }
+
+    private function createServer(string $endpoint, array $data, bool $wait = false): ServerResource
+    {
+        $server = $this->postRequest($endpoint, $data);
+
+        if ($wait) {
+            return $this->wait(function () use ($server) {
+                $event = $this->spinupwp->events->get($server['event_id']);
+
+                if (!in_array($event->status, ['deployed', 'failed'])) {
+                    return false;
+                }
+
+                return $this->get($server['data']['id']);
+            });
+        }
+
+        return new ServerResource($server, $this->spinupwp);
     }
 }

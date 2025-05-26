@@ -30,6 +30,9 @@ $server = $spinupwp->servers->get($serverId);
 // Create and return a new server 
 $server = $spinupwp->servers->create([]);
 
+// Create and return a new custom server 
+$server = $spinupwp->servers->createCustom([]);
+
 // Delete a server
 $eventId = $spinupwp->servers->delete($serverId, $deleteOnProvider);
 
