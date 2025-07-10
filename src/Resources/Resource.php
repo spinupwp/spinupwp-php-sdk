@@ -17,8 +17,6 @@ class Resource
         $this->attributes = $payload['data'] ?? [];
         $this->eventId    = $payload['event_id'] ?? null;
         $this->spinupwp   = $spinupwp;
-
-        $this->fill();
     }
 
     public function toArray(): array
@@ -26,11 +24,19 @@ class Resource
         return $this->attributes;
     }
 
-    protected function fill(): void
+    public function __get(string $name)
     {
-        foreach ($this->attributes as $key => $value) {
-            $this->{$key} = $value;
-        }
+        return $this->attributes[$name] ?? null;
+    }
+
+    public function __set(string $name, $value): void
+    {
+        $this->attributes[$name] = $value;
+    }
+
+    public function __isset(string $name): bool
+    {
+        return isset($this->attributes[$name]);
     }
 
     public function eventId(): ?int
