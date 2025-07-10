@@ -57,6 +57,20 @@ class ServerTest extends TestCase
         $this->assertEquals('hellfish-media', $server->name);
     }
 
+    public function test_create_custom_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'servers/custom', [
+            'form_params' => [
+                'hostname' => 'hellfish-media',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"data": {"name": "hellfish-media"}}')
+        );
+
+        $server = $this->serverEndpoint->createCustom(['hostname' => 'hellfish-media']);
+        $this->assertEquals('hellfish-media', $server->name);
+    }
+
     public function test_delete_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('DELETE', 'servers/1', [

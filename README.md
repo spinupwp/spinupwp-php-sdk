@@ -30,6 +30,9 @@ $server = $spinupwp->servers->get($serverId);
 // Create and return a new server 
 $server = $spinupwp->servers->create([]);
 
+// Create and return a new custom server 
+$server = $spinupwp->servers->createCustom([]);
+
 // Delete a server
 $eventId = $spinupwp->servers->delete($serverId, $deleteOnProvider);
 
@@ -117,6 +120,12 @@ $events = $spinupwp->events->list();
 
 // Return a single event
 $event = $spinupwp->events->get($eventId);
+```
+
+### SSH Key
+```php
+// Return SpinupWP's SSH Public Key
+$key = $spinupwp->sshKeys->get();
 ```
 
 ### Resource Collections
