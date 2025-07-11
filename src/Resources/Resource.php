@@ -24,11 +24,17 @@ class Resource
         return $this->attributes;
     }
 
+    /**
+     * @return mixed|null
+     */
     public function __get(string $name)
     {
         return $this->attributes[$name] ?? null;
     }
 
+    /**
+     * @param mixed $value
+     */
     public function __set(string $name, $value): void
     {
         $this->attributes[$name] = $value;
