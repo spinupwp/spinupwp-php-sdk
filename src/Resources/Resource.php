@@ -24,12 +24,12 @@ class Resource
         return $this->attributes;
     }
 
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         return $this->attributes[$name] ?? null;
     }
 
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         $this->attributes[$name] = $value;
     }
