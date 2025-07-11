@@ -7,13 +7,6 @@ use GuzzleHttp\Psr7\Response;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use SpinupWp\Endpoints\Provider;
-use SpinupWp\Endpoints\Site;
-use SpinupWp\Endpoints\SshKey;
-use SpinupWp\Exceptions\NotFoundException;
-use SpinupWp\Exceptions\RateLimitException;
-use SpinupWp\Exceptions\UnauthorizedException;
-use SpinupWp\Exceptions\ValidationException;
-use SpinupWp\Resources\Event as EventResource;
 use SpinupWp\SpinupWp;
 
 class ProviderTest extends TestCase
