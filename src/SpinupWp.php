@@ -16,7 +16,7 @@ use SpinupWp\Endpoints\SshKey;
  */
 class SpinupWp
 {
-    public const API_URL = 'https://api.spinupwp.app/v1/';
+    public const API_URL = 'https://api.spinupwp.test/v1/';
 
     protected string $apiKey;
 

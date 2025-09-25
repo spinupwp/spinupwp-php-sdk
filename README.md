@@ -42,6 +42,9 @@ $eventId = $spinupwp->servers->reboot($serverId);
 // Restart the Nginx service on a server
 $eventId = $spinupwp->servers->restartNginx($serverId);
 
+// Restart the Redis service on a server
+$eventId = $spinupwp->servers->restartRedis($serverId);
+
 // Restart all versions of the PHP-FPM service installed on a server
 $eventId = $spinupwp->servers->restartPhp($serverId);
 
@@ -61,6 +64,9 @@ $server->reboot();
 
 // Restart the Nginx service on the current server
 $server->restartNginx();
+
+// Restart the Redis service on the current server
+$server->restartRedis();
 
 // Restart all versions of the PHP-FPM service installed on the current server
 $server->restartPhp();
