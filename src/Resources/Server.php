@@ -24,6 +24,11 @@ class Server extends Resource
         return $this->spinupwp->servers->restartNginx($this->id);
     }
 
+    public function restartRedis(): int
+    {
+        return $this->spinupwp->servers->restartRedis($this->id);
+    }
+
     public function restartPhp(): int
     {
         return $this->spinupwp->servers->restartPhp($this->id);
