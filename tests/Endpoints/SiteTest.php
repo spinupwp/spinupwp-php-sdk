@@ -184,4 +184,135 @@ class SiteTest extends TestCase
 
         (new Site($this->spinupwp))->get(1);
     }
+
+    public function test_enable_https_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/https', [
+            'form_params' => [
+                'type' => 'webroot',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->enableHttps(1, ['type' => 'webroot']));
+    }
+
+    public function test_update_https_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/https', [
+            'form_params' => [
+                'type'        => 'custom',
+                'certificate' => '-----BEGIN CERTIFICATE-----',
+                'private_key' => '-----BEGIN PRIVATE KEY-----',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updateHttps(1, [
+            'type'        => 'custom',
+            'certificate' => '-----BEGIN CERTIFICATE-----',
+            'private_key' => '-----BEGIN PRIVATE KEY-----',
+        ]));
+    }
+
+    public function test_disable_https_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/https', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->disableHttps(1));
+    }
+
+    public function test_update_php_version_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/php', [
+            'form_params' => [
+                'php_version' => '8.3',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updatePhpSettings(1, ['php_version' => '8.3']));
+    }
+
+    public function test_enable_spinupwp_subdomain_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/spinupwp-subdomain', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->enableSpinupwpSubdomain(1));
+    }
+
+    public function test_disable_spinupwp_subdomain_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/spinupwp-subdomain', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->disableSpinupwpSubdomain(1));
+    }
+
+    public function test_list_domains_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('GET', 'sites/1/domains', [])->andReturn(
+            new Response(200, [], '{"data": [{"id": 1, "domain": "www.hellfish.media"}]}')
+        );
+
+        $domains = $this->siteEndpoint->listDomains(1);
+        $this->assertCount(1, $domains);
+        $this->assertEquals('www.hellfish.media', $domains[0]['domain']);
+    }
+
+    public function test_add_domain_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/domains', [
+            'form_params' => [
+                'domain' => 'www.hellfish.media',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100, "data": {"id": 1, "domain": "www.hellfish.media"}}')
+        );
+
+        $result = $this->siteEndpoint->addDomain(1, ['domain' => 'www.hellfish.media']);
+        $this->assertEquals(100, $result['event_id']);
+        $this->assertEquals('www.hellfish.media', $result['data']['domain']);
+    }
+
+    public function test_update_domain_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/domains/2', [
+            'form_params' => [
+                'redirect' => [
+                    'enabled'     => true,
+                    'type'        => 301,
+                    'destination' => 'hellfish.media',
+                ],
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100, "data": {"id": 2, "domain": "www.hellfish.media"}}')
+        );
+
+        $result = $this->siteEndpoint->updateDomain(1, 2, [
+            'redirect' => [
+                'enabled'     => true,
+                'type'        => 301,
+                'destination' => 'hellfish.media',
+            ],
+        ]);
+        $this->assertEquals(100, $result['event_id']);
+    }
+
+    public function test_delete_domain_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/domains/2', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->deleteDomain(1, 2));
+    }
 }

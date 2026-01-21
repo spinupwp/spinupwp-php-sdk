@@ -83,6 +83,11 @@ abstract class Endpoint
         return $this->request('POST', $uri, $payload);
     }
 
+    public function putRequest(string $uri, array $payload = []): array
+    {
+        return $this->request('PUT', $uri, $payload);
+    }
+
     public function deleteRequest(string $uri, array $payload = []): array
     {
         return $this->request('DELETE', $uri, $payload);

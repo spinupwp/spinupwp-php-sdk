@@ -83,7 +83,7 @@ $sites = $spinupwp->sites->list();
 // Return a single site
 $site = $spinupwp->sites->get($siteId);
 
-// Create and return a new site 
+// Create and return a new site
 $site = $spinupwp->sites->create($serverId, []);
 
 // Delete a site
@@ -100,6 +100,51 @@ $eventId = $spinupwp->sites->purgeObjectCache($siteId);
 
 // Reset a site's file permissions
 $eventId = $spinupwp->sites->correctFilePermissions($siteId);
+
+// Enable HTTPS
+$eventId = $spinupwp->sites->enableHttps($siteId, ['type' => 'webroot']);
+
+// Update HTTPS settings
+$eventId = $spinupwp->sites->updateHttps($siteId, [
+    'type' => 'custom',
+    'certificate' => '-----BEGIN CERTIFICATE-----...',
+    'private_key' => '-----BEGIN PRIVATE KEY-----...',
+]);
+
+// Disable HTTPS
+$eventId = $spinupwp->sites->disableHttps($siteId);
+
+// Update PHP version
+$eventId = $spinupwp->sites->updatePhpSettings($siteId, ['php_version' => '8.3']);
+
+// Enable the SpinupWP subdomain
+$eventId = $spinupwp->sites->enableSpinupwpSubdomain($siteId);
+
+// Disable the SpinupWP subdomain
+$eventId = $spinupwp->sites->disableSpinupwpSubdomain($siteId);
+
+// List additional domains
+$domains = $spinupwp->sites->listDomains($siteId);
+
+// Add an additional domain
+$domain = $spinupwp->sites->addDomain($siteId, [
+    'domain' => 'www.turnipjuice.media',
+    'redirect' => [
+        'enabled' => true,
+    ],
+]);
+
+// Update an additional domain
+$domain = $spinupwp->sites->updateDomain($siteId, $domainId, [
+    'redirect' => [
+        'enabled' => true,
+        'type' => 301,
+        'destination' => 'turnipjuice.media',
+    ],
+]);
+
+// Delete an additional domain
+$eventId = $spinupwp->sites->deleteDomain($siteId, $domainId);
 ```
 On a `Site` instance you may also call:
 ```php
@@ -117,7 +162,37 @@ $site->purgeObjectCache();
 
 // Reset a site's file permissions
 $site->correctFilePermissions();
-````
+
+// Enable HTTPS
+$site->enableHttps(['type' => 'webroot']);
+
+// Update HTTPS settings
+$site->updateHttps(['type' => 'custom', 'certificate' => '...', 'private_key' => '...']);
+
+// Disable HTTPS
+$site->disableHttps();
+
+// Update PHP version
+$site->updatePhpSettings(['php_version' => '8.3']);
+
+// Enable the SpinupWP subdomain
+$site->enableSpinupwpSubdomain();
+
+// Disable the SpinupWP subdomain
+$site->disableSpinupwpSubdomain();
+
+// List additional domains
+$site->listDomains();
+
+// Add an additional domain
+$site->addDomain(['domain' => 'www.turnipjuice.media']);
+
+// Update an additional domain
+$site->updateDomain($domainId, ['redirect' => ['enabled' => true]]);
+
+// Delete an additional domain
+$site->deleteDomain($domainId);
+```
 
 ### Events
 ```php
