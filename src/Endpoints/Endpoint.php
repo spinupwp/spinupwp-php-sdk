@@ -4,8 +4,8 @@ namespace SpinupWp\Endpoints;
 
 use Exception;
 use Psr\Http\Message\ResponseInterface;
-use SpinupWp\Exceptions\BadRequestException;
 use SpinupWp\Exceptions\AccessDeniedException;
+use SpinupWp\Exceptions\BadRequestException;
 use SpinupWp\Exceptions\NotFoundException;
 use SpinupWp\Exceptions\RateLimitException;
 use SpinupWp\Exceptions\TimeoutException;
