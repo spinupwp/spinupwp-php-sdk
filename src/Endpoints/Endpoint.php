@@ -4,6 +4,7 @@ namespace SpinupWp\Endpoints;
 
 use Exception;
 use Psr\Http\Message\ResponseInterface;
+use SpinupWp\Exceptions\BadRequestException;
 use SpinupWp\Exceptions\AccessDeniedException;
 use SpinupWp\Exceptions\NotFoundException;
 use SpinupWp\Exceptions\RateLimitException;
@@ -44,6 +45,12 @@ abstract class Endpoint
 
     protected function handleRequestError(ResponseInterface $response): void
     {
+        if ($response->getStatusCode() === 400) {
+            $responseBody = (string) $response->getBody();
+
+            throw new BadRequestException(json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR));
+        }
+
         if ($response->getStatusCode() === 401) {
             throw new UnauthorizedException();
         }
