@@ -92,4 +92,13 @@ class Site extends Endpoint
 
         return $request['event_id'];
     }
+
+    public function wpCli(int $id, array $commands): int
+    {
+        $request = $this->postRequest("sites/{$id}/wp-cli", [
+            'commands' => $commands,
+        ]);
+
+        return $request['event_id'];
+    }
 }

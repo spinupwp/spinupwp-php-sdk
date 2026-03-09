@@ -32,4 +32,9 @@ class Site extends Resource
     {
         return $this->spinupwp->sites->correctFilePermissions($this->id);
     }
+
+    public function wpCli(array $commands): int
+    {
+        return $this->spinupwp->sites->wpCli($this->id, $commands);
+    }
 }

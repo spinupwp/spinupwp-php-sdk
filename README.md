@@ -100,6 +100,9 @@ $eventId = $spinupwp->sites->purgeObjectCache($siteId);
 
 // Reset a site's file permissions
 $eventId = $spinupwp->sites->correctFilePermissions($siteId);
+
+// Run WP-CLI commands on a site
+$eventId = $spinupwp->sites->wpCli($siteId, ['plugin list --status=active', 'core version']);
 ```
 On a `Site` instance you may also call:
 ```php
@@ -117,6 +120,9 @@ $site->purgeObjectCache();
 
 // Reset a site's file permissions
 $site->correctFilePermissions();
+
+// Run WP-CLI commands
+$site->wpCli(['plugin list --status=active', 'core version']);
 ````
 
 ### Events

@@ -133,6 +133,19 @@ class SiteTest extends TestCase
         $this->assertEquals(100, $this->siteEndpoint->correctFilePermissions(1));
     }
 
+    public function test_wp_cli(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/wp-cli', [
+            'form_params' => [
+                'commands' => ['plugin list --status=active', 'core version'],
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->wpCli(1, ['plugin list --status=active', 'core version']));
+    }
+
     public function test_handling_validation_errors(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites', [
