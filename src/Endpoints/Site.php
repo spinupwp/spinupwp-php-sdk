@@ -92,4 +92,74 @@ class Site extends Endpoint
 
         return $request['event_id'];
     }
+
+    public function enableHttps(int $id, array $data): int
+    {
+        $request = $this->postRequest("sites/{$id}/https", $data);
+
+        return $request['event_id'];
+    }
+
+    public function updateHttps(int $id, array $data): int
+    {
+        $request = $this->putRequest("sites/{$id}/https", $data);
+
+        return $request['event_id'];
+    }
+
+    public function disableHttps(int $id): int
+    {
+        $request = $this->deleteRequest("sites/{$id}/https");
+
+        return $request['event_id'];
+    }
+
+    public function updatePhpSettings(int $id, array $data): int
+    {
+        $request = $this->putRequest("sites/{$id}/php", $data);
+
+        return $request['event_id'];
+    }
+
+    public function enableSpinupwpSubdomain(int $id): int
+    {
+        $request = $this->postRequest("sites/{$id}/spinupwp-subdomain");
+
+        return $request['event_id'];
+    }
+
+    public function disableSpinupwpSubdomain(int $id): int
+    {
+        $request = $this->deleteRequest("sites/{$id}/spinupwp-subdomain");
+
+        return $request['event_id'];
+    }
+
+    public function listDomains(int $id): array
+    {
+        $domains = $this->getRequest("sites/{$id}/domains");
+
+        return $domains['data'];
+    }
+
+    public function addDomain(int $id, array $data): array
+    {
+        $domain = $this->postRequest("sites/{$id}/domains", $data);
+
+        return $domain;
+    }
+
+    public function updateDomain(int $siteId, int $domainId, array $data): array
+    {
+        $domain = $this->putRequest("sites/{$siteId}/domains/{$domainId}", $data);
+
+        return $domain;
+    }
+
+    public function deleteDomain(int $siteId, int $domainId): int
+    {
+        $request = $this->deleteRequest("sites/{$siteId}/domains/{$domainId}");
+
+        return $request['event_id'];
+    }
 }

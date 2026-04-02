@@ -5,6 +5,7 @@ namespace SpinupWp\Endpoints;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use SpinupWp\Exceptions\AccessDeniedException;
+use SpinupWp\Exceptions\BadRequestException;
 use SpinupWp\Exceptions\NotFoundException;
 use SpinupWp\Exceptions\RateLimitException;
 use SpinupWp\Exceptions\TimeoutException;
@@ -44,6 +45,12 @@ abstract class Endpoint
 
     protected function handleRequestError(ResponseInterface $response): void
     {
+        if ($response->getStatusCode() === 400) {
+            $responseBody = (string) $response->getBody();
+
+            throw new BadRequestException(json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR));
+        }
+
         if ($response->getStatusCode() === 401) {
             throw new UnauthorizedException();
         }
@@ -81,6 +88,11 @@ abstract class Endpoint
     public function postRequest(string $uri, array $payload = []): array
     {
         return $this->request('POST', $uri, $payload);
+    }
+
+    public function putRequest(string $uri, array $payload = []): array
+    {
+        return $this->request('PUT', $uri, $payload);
     }
 
     public function deleteRequest(string $uri, array $payload = []): array
