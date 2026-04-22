@@ -145,6 +145,109 @@ $domain = $spinupwp->sites->updateDomain($siteId, $domainId, [
 
 // Delete an additional domain
 $eventId = $spinupwp->sites->deleteDomain($siteId, $domainId);
+
+// Connect a Git repository
+$eventId = $spinupwp->sites->connectGit($siteId, [
+    'repo' => 'git@github.com:spinupwp/spinupwp-composer-site.git',
+    'branch' => 'main',
+    'push_to_deploy' => true,
+]);
+
+// Connect a Git repository using a custom site deploy key
+$eventId = $spinupwp->sites->connectGit($siteId, [
+    'repo' => 'git@github.com:spinupwp/spinupwp-composer-site.git',
+    'branch' => 'main',
+    'deploy_key' => [
+        'privatekey' => '-----BEGIN OPENSSH PRIVATE KEY-----...',
+        'publickey' => 'ssh-ed25519 AAAA...',
+    ],
+]);
+
+// Update Git settings
+$eventId = $spinupwp->sites->updateGit($siteId, ['branch' => 'production']);
+
+// Disconnect Git
+$eventId = $spinupwp->sites->disconnectGit($siteId);
+
+// Enable page cache
+$eventId = $spinupwp->sites->enablePageCache($siteId);
+
+// Update page cache settings
+$eventId = $spinupwp->sites->updatePageCache($siteId, [
+    'duration' => 1,
+    'duration_unit' => 'h',
+]);
+
+// Disable page cache
+$eventId = $spinupwp->sites->disablePageCache($siteId);
+
+// Update Nginx settings
+$site = $spinupwp->sites->updateNginx($siteId, [
+    'uploads_directory_protected' => true,
+    'xmlrpc_protected' => true,
+]);
+
+// Enable the server-level WP cron
+$eventId = $spinupwp->sites->enableCron($siteId, ['interval' => 5]);
+
+// Update the WP cron interval
+$eventId = $spinupwp->sites->updateCron($siteId, ['interval' => 15]);
+
+// Disable the server-level WP cron
+$eventId = $spinupwp->sites->disableCron($siteId);
+
+// Enable basic auth
+$eventId = $spinupwp->sites->enableBasicAuth($siteId, [
+    'username' => 'turnipjuice',
+    'password' => 'DK6Jrfj8gyWzL',
+]);
+
+// Update basic auth credentials
+$eventId = $spinupwp->sites->updateBasicAuth($siteId, ['username' => 'newuser']);
+
+// Disable basic auth
+$eventId = $spinupwp->sites->disableBasicAuth($siteId);
+
+// List path redirects
+$redirects = $spinupwp->sites->listPathRedirects($siteId);
+
+// Add a path redirect
+$eventId = $spinupwp->sites->addPathRedirect($siteId, [
+    'from' => '/old-path',
+    'to' => '/new-path',
+    'type' => 'permanent',
+]);
+
+// Update a path redirect
+$eventId = $spinupwp->sites->updatePathRedirect($siteId, $pathRedirectId, [
+    'to' => '/newer-path',
+]);
+
+// Delete a path redirect
+$eventId = $spinupwp->sites->deletePathRedirect($siteId, $pathRedirectId);
+
+// Update backup settings
+$site = $spinupwp->sites->updateBackupSettings($siteId, [
+    'storage_provider_id' => 1,
+    'storage_provider_bucket' => 'turnipjuice-media',
+    'storage_provider_region' => 'nyc3',
+]);
+
+// Update backup schedule
+$site = $spinupwp->sites->updateBackupSchedule($siteId, [
+    'daily_schedule' => [
+        'time_of_day' => [2],
+        'backup_database' => true,
+        'backup_files' => true,
+        'retention_period' => 30,
+    ],
+]);
+
+// Update site user authentication
+$eventId = $spinupwp->sites->updateSiteUser($siteId, [
+    'authentication' => 'publickey',
+    'ssh_key_ids' => [1],
+]);
 ```
 On a `Site` instance you may also call:
 ```php
@@ -192,6 +295,52 @@ $site->updateDomain($domainId, ['redirect' => ['enabled' => true]]);
 
 // Delete an additional domain
 $site->deleteDomain($domainId);
+
+// Connect a Git repository
+$site->connectGit(['repo' => '...', 'branch' => 'main']);
+
+// Update Git settings
+$site->updateGit(['branch' => 'production']);
+
+// Disconnect Git
+$site->disconnectGit();
+
+// Enable page cache
+$site->enablePageCache();
+
+// Update page cache settings
+$site->updatePageCache(['duration' => 1, 'duration_unit' => 'h']);
+
+// Disable page cache
+$site->disablePageCache();
+
+// Update Nginx settings
+$site->updateNginx(['uploads_directory_protected' => true]);
+
+// Enable, update, or disable the server-level WP cron
+$site->enableCron(['interval' => 5]);
+$site->updateCron(['interval' => 15]);
+$site->disableCron();
+
+// Enable, update, or disable basic auth
+$site->enableBasicAuth(['username' => 'turnipjuice', 'password' => 'DK6Jrfj8gyWzL']);
+$site->updateBasicAuth(['username' => 'newuser']);
+$site->disableBasicAuth();
+
+// Manage path redirects
+$site->listPathRedirects();
+$site->addPathRedirect(['from' => '/old', 'to' => '/new', 'type' => 'permanent']);
+$site->updatePathRedirect($pathRedirectId, ['to' => '/newer']);
+$site->deletePathRedirect($pathRedirectId);
+
+// Update backup settings
+$site->updateBackupSettings(['storage_provider_id' => 1, 'storage_provider_bucket' => 'bucket']);
+
+// Update backup schedule
+$site->updateBackupSchedule(['daily_schedule' => ['time_of_day' => [2]]]);
+
+// Update site user authentication
+$site->updateSiteUser(['authentication' => 'publickey', 'ssh_key_ids' => [1]]);
 ```
 
 ### Events
