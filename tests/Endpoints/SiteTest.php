@@ -337,7 +337,7 @@ class SiteTest extends TestCase
 
     public function test_update_git_request(): void
     {
-        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/git', [
+        $this->client->shouldReceive('request')->once()->with('PATCH', 'sites/1/git', [
             'form_params' => [
                 'branch' => 'production',
             ],
@@ -368,7 +368,7 @@ class SiteTest extends TestCase
 
     public function test_update_page_cache_request(): void
     {
-        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/page-cache', [
+        $this->client->shouldReceive('request')->once()->with('PATCH', 'sites/1/page-cache', [
             'form_params' => [
                 'duration'      => 1,
                 'duration_unit' => 'h',
@@ -394,7 +394,7 @@ class SiteTest extends TestCase
 
     public function test_update_nginx_request(): void
     {
-        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/nginx', [
+        $this->client->shouldReceive('request')->once()->with('PATCH', 'sites/1/nginx', [
             'form_params' => [
                 'uploads_directory_protected' => true,
                 'xmlrpc_protected'            => true,
@@ -464,7 +464,7 @@ class SiteTest extends TestCase
 
     public function test_update_basic_auth_request(): void
     {
-        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/basic-auth', [
+        $this->client->shouldReceive('request')->once()->with('PATCH', 'sites/1/basic-auth', [
             'form_params' => [
                 'username' => 'newuser',
             ],
@@ -516,7 +516,7 @@ class SiteTest extends TestCase
 
     public function test_update_path_redirect_request(): void
     {
-        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/path-redirects/2', [
+        $this->client->shouldReceive('request')->once()->with('PATCH', 'sites/1/path-redirects/2', [
             'form_params' => [
                 'to' => '/newer-path',
             ],
@@ -538,7 +538,7 @@ class SiteTest extends TestCase
 
     public function test_update_backup_settings_request(): void
     {
-        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/backup-settings', [
+        $this->client->shouldReceive('request')->once()->with('PATCH', 'sites/1/backup-settings', [
             'form_params' => [
                 'storage_provider_id'     => 1,
                 'storage_provider_bucket' => 'turnipjuice-media',
@@ -558,7 +558,7 @@ class SiteTest extends TestCase
 
     public function test_update_backup_schedule_request(): void
     {
-        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/backup-schedule', [
+        $this->client->shouldReceive('request')->once()->with('PATCH', 'sites/1/backup-schedule', [
             'form_params' => [
                 'daily_schedule' => [
                     'time_of_day'      => [2],
