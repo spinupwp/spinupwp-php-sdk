@@ -158,14 +158,9 @@ class Site extends Resource
         return $this->spinupwp->sites->addPathRedirect($this->id, $data);
     }
 
-    public function updatePathRedirect(int $pathRedirectId, array $data): int
+    public function deletePathRedirect(array $data): int
     {
-        return $this->spinupwp->sites->updatePathRedirect($this->id, $pathRedirectId, $data);
-    }
-
-    public function deletePathRedirect(int $pathRedirectId): int
-    {
-        return $this->spinupwp->sites->deletePathRedirect($this->id, $pathRedirectId);
+        return $this->spinupwp->sites->deletePathRedirect($this->id, $data);
     }
 
     public function updateBackupSettings(array $data): self

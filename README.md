@@ -218,13 +218,11 @@ $eventId = $spinupwp->sites->addPathRedirect($siteId, [
     'type' => 'permanent',
 ]);
 
-// Update a path redirect
-$eventId = $spinupwp->sites->updatePathRedirect($siteId, $pathRedirectId, [
-    'to' => '/newer-path',
+// Delete a path redirect (identified by its from/to)
+$eventId = $spinupwp->sites->deletePathRedirect($siteId, [
+    'from' => '/old-path',
+    'to'   => '/new-path',
 ]);
-
-// Delete a path redirect
-$eventId = $spinupwp->sites->deletePathRedirect($siteId, $pathRedirectId);
 
 // Update backup settings
 $site = $spinupwp->sites->updateBackupSettings($siteId, [
@@ -330,8 +328,7 @@ $site->disableBasicAuth();
 // Manage path redirects
 $site->listPathRedirects();
 $site->addPathRedirect(['from' => '/old', 'to' => '/new', 'type' => 'permanent']);
-$site->updatePathRedirect($pathRedirectId, ['to' => '/newer']);
-$site->deletePathRedirect($pathRedirectId);
+$site->deletePathRedirect(['from' => '/old', 'to' => '/new']);
 
 // Update backup settings
 $site->updateBackupSettings(['storage_provider_id' => 1, 'storage_provider_bucket' => 'bucket']);

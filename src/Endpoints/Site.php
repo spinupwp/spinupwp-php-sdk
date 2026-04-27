@@ -268,16 +268,9 @@ class Site extends Endpoint
         return $request['event_id'];
     }
 
-    public function updatePathRedirect(int $siteId, int $pathRedirectId, array $data): int
+    public function deletePathRedirect(int $siteId, array $data): int
     {
-        $request = $this->patchRequest("sites/{$siteId}/path-redirects/{$pathRedirectId}", $data);
-
-        return $request['event_id'];
-    }
-
-    public function deletePathRedirect(int $siteId, int $pathRedirectId): int
-    {
-        $request = $this->deleteRequest("sites/{$siteId}/path-redirects/{$pathRedirectId}");
+        $request = $this->deleteRequest("sites/{$siteId}/path-redirects", $data);
 
         return $request['event_id'];
     }

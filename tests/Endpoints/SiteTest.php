@@ -514,26 +514,21 @@ class SiteTest extends TestCase
         ]));
     }
 
-    public function test_update_path_redirect_request(): void
+    public function test_delete_path_redirect_request(): void
     {
-        $this->client->shouldReceive('request')->once()->with('PATCH', 'sites/1/path-redirects/2', [
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/path-redirects', [
             'form_params' => [
-                'to' => '/newer-path',
+                'from' => '/old-path',
+                'to'   => '/new-path',
             ],
         ])->andReturn(
             new Response(200, [], '{"event_id": 100}')
         );
 
-        $this->assertEquals(100, $this->siteEndpoint->updatePathRedirect(1, 2, ['to' => '/newer-path']));
-    }
-
-    public function test_delete_path_redirect_request(): void
-    {
-        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/path-redirects/2', [])->andReturn(
-            new Response(200, [], '{"event_id": 100}')
-        );
-
-        $this->assertEquals(100, $this->siteEndpoint->deletePathRedirect(1, 2));
+        $this->assertEquals(100, $this->siteEndpoint->deletePathRedirect(1, [
+            'from' => '/old-path',
+            'to'   => '/new-path',
+        ]));
     }
 
     public function test_update_backup_settings_request(): void
