@@ -182,7 +182,7 @@ $eventId = $spinupwp->sites->updatePageCache($siteId, [
 $eventId = $spinupwp->sites->disablePageCache($siteId);
 
 // Update Nginx settings
-$site = $spinupwp->sites->updateNginx($siteId, [
+$eventIds = $spinupwp->sites->updateNginx($siteId, [
     'uploads_directory_protected' => true,
     'xmlrpc_protected' => true,
 ]);

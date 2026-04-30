@@ -205,11 +205,11 @@ class Site extends Endpoint
         return $request['event_id'];
     }
 
-    public function updateNginx(int $id, array $data): SiteResource
+    public function updateNginx(int $id, array $data): array
     {
-        $site = $this->patchRequest("sites/{$id}/nginx", $data);
+        $request = $this->patchRequest("sites/{$id}/nginx", $data);
 
-        return new SiteResource($site, $this->spinupwp);
+        return $request['event_ids'];
     }
 
     public function enableCron(int $id, array $data): int

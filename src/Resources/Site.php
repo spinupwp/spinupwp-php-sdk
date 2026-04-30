@@ -113,7 +113,7 @@ class Site extends Resource
         return $this->spinupwp->sites->disablePageCache($this->id);
     }
 
-    public function updateNginx(array $data): self
+    public function updateNginx(array $data): array
     {
         return $this->spinupwp->sites->updateNginx($this->id, $data);
     }

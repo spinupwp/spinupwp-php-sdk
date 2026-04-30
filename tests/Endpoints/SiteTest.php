@@ -400,14 +400,14 @@ class SiteTest extends TestCase
                 'xmlrpc_protected'            => true,
             ],
         ])->andReturn(
-            new Response(200, [], '{"data": {"domain": "hellfish.media"}}')
+            new Response(200, [], '{"event_ids": [100, 101]}')
         );
 
-        $site = $this->siteEndpoint->updateNginx(1, [
+        $eventIds = $this->siteEndpoint->updateNginx(1, [
             'uploads_directory_protected' => true,
             'xmlrpc_protected'            => true,
         ]);
-        $this->assertEquals('hellfish.media', $site->domain);
+        $this->assertSame([100, 101], $eventIds);
     }
 
     public function test_enable_cron_request(): void
