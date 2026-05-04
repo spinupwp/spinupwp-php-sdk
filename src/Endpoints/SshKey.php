@@ -10,4 +10,11 @@ class SshKey extends Endpoint
 
         return $response['key'];
     }
+
+    public function list(): array
+    {
+        $sshKeys = $this->getRequest('ssh-keys');
+
+        return $sshKeys['data'];
+    }
 }

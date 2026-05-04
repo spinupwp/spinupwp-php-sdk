@@ -353,6 +353,15 @@ $event = $spinupwp->events->get($eventId);
 ```php
 // Return SpinupWP's SSH Public Key
 $key = $spinupwp->sshKeys->get();
+
+// List the SSH keys configured on your team
+$sshKeys = $spinupwp->sshKeys->list();
+```
+
+### Storage Providers
+```php
+// List the storage providers configured on your team
+$storageProviders = $spinupwp->storageProviders->list();
 ```
 
 ### Resource Collections

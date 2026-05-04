@@ -39,4 +39,15 @@ class SshKeyTest extends TestCase
         $key = $this->endpoint->get();
         $this->assertEquals('ssh-rsa ...', $key);
     }
+
+    public function test_list_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('GET', 'ssh-keys', [])->andReturn(
+            new Response(200, [], '{"data": [{"id": 1, "name": "Vincent\'s laptop", "fingerprint": "SHA256:...", "publickey": "ssh-rsa ..."}]}')
+        );
+
+        $sshKeys = $this->endpoint->list();
+        $this->assertCount(1, $sshKeys);
+        $this->assertEquals('Vincent\'s laptop', $sshKeys[0]['name']);
+    }
 }
