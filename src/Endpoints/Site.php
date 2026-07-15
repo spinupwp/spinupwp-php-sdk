@@ -93,6 +93,20 @@ class Site extends Endpoint
         return $request['event_id'];
     }
 
+    public function disable(int $id): int
+    {
+        $request = $this->postRequest("sites/{$id}/disable");
+
+        return $request['event_id'];
+    }
+
+    public function enable(int $id): int
+    {
+        $request = $this->postRequest("sites/{$id}/enable");
+
+        return $request['event_id'];
+    }
+
     public function enableHttps(int $id, array $data): int
     {
         $request = $this->postRequest("sites/{$id}/https", $data);
