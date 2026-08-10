@@ -95,11 +95,6 @@ abstract class Endpoint
         return $this->request('PUT', $uri, $payload);
     }
 
-    public function patchRequest(string $uri, array $payload = []): array
-    {
-        return $this->request('PATCH', $uri, $payload);
-    }
-
     public function deleteRequest(string $uri, array $payload = []): array
     {
         return $this->request('DELETE', $uri, $payload);

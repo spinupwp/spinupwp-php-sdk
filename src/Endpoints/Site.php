@@ -172,7 +172,7 @@ class Site extends Endpoint
 
     public function updateGit(int $id, array $data): int
     {
-        $request = $this->patchRequest("sites/{$id}/git", $data);
+        $request = $this->putRequest("sites/{$id}/git", $data);
 
         return $request['event_id'];
     }
@@ -193,7 +193,7 @@ class Site extends Endpoint
 
     public function updatePageCache(int $id, array $data): int
     {
-        $request = $this->patchRequest("sites/{$id}/page-cache", $data);
+        $request = $this->putRequest("sites/{$id}/page-cache", $data);
 
         return $request['event_id'];
     }
@@ -207,7 +207,7 @@ class Site extends Endpoint
 
     public function updateNginx(int $id, array $data): array
     {
-        $request = $this->patchRequest("sites/{$id}/nginx", $data);
+        $request = $this->putRequest("sites/{$id}/nginx", $data);
 
         return $request['event_ids'];
     }
@@ -242,7 +242,7 @@ class Site extends Endpoint
 
     public function updateBasicAuth(int $id, array $data): int
     {
-        $request = $this->patchRequest("sites/{$id}/basic-auth", $data);
+        $request = $this->putRequest("sites/{$id}/basic-auth", $data);
 
         return $request['event_id'];
     }
@@ -277,14 +277,14 @@ class Site extends Endpoint
 
     public function updateBackupSettings(int $id, array $data): SiteResource
     {
-        $site = $this->patchRequest("sites/{$id}/backup-settings", $data);
+        $site = $this->putRequest("sites/{$id}/backup-settings", $data);
 
         return new SiteResource($site, $this->spinupwp);
     }
 
     public function updateBackupSchedule(int $id, array $data): SiteResource
     {
-        $site = $this->patchRequest("sites/{$id}/backup-schedule", $data);
+        $site = $this->putRequest("sites/{$id}/backup-schedule", $data);
 
         return new SiteResource($site, $this->spinupwp);
     }
