@@ -348,6 +348,19 @@ class SiteTest extends TestCase
         $this->assertEquals(100, $this->siteEndpoint->updateGit(1, ['branch' => 'production']));
     }
 
+    public function test_update_git_request_without_a_dispatched_event(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/git', [
+            'form_params' => [
+                'push_to_deploy' => true,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": null}')
+        );
+
+        $this->assertNull($this->siteEndpoint->updateGit(1, ['push_to_deploy' => true]));
+    }
+
     public function test_disconnect_git_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/git', [])->andReturn(

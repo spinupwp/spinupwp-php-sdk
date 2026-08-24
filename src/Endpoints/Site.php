@@ -170,7 +170,7 @@ class Site extends Endpoint
         return $request['event_id'];
     }
 
-    public function updateGit(int $id, array $data): int
+    public function updateGit(int $id, array $data): ?int
     {
         $request = $this->putRequest("sites/{$id}/git", $data);
 

@@ -88,7 +88,7 @@ class Site extends Resource
         return $this->spinupwp->sites->connectGit($this->id, $data);
     }
 
-    public function updateGit(array $data): int
+    public function updateGit(array $data): ?int
     {
         return $this->spinupwp->sites->updateGit($this->id, $data);
     }
