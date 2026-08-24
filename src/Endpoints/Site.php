@@ -162,4 +162,137 @@ class Site extends Endpoint
 
         return $request['event_id'];
     }
+
+    public function connectGit(int $id, array $data): int
+    {
+        $request = $this->postRequest("sites/{$id}/git", $data);
+
+        return $request['event_id'];
+    }
+
+    public function updateGit(int $id, array $data): ?int
+    {
+        $request = $this->putRequest("sites/{$id}/git", $data);
+
+        return $request['event_id'];
+    }
+
+    public function disconnectGit(int $id): int
+    {
+        $request = $this->deleteRequest("sites/{$id}/git");
+
+        return $request['event_id'];
+    }
+
+    public function enablePageCache(int $id, array $data = []): int
+    {
+        $request = $this->postRequest("sites/{$id}/page-cache", $data);
+
+        return $request['event_id'];
+    }
+
+    public function updatePageCache(int $id, array $data): int
+    {
+        $request = $this->putRequest("sites/{$id}/page-cache", $data);
+
+        return $request['event_id'];
+    }
+
+    public function disablePageCache(int $id): int
+    {
+        $request = $this->deleteRequest("sites/{$id}/page-cache");
+
+        return $request['event_id'];
+    }
+
+    public function updateNginx(int $id, array $data): array
+    {
+        $request = $this->putRequest("sites/{$id}/nginx", $data);
+
+        return $request['event_ids'];
+    }
+
+    public function enableCron(int $id, array $data): int
+    {
+        $request = $this->postRequest("sites/{$id}/cron", $data);
+
+        return $request['event_id'];
+    }
+
+    public function updateCron(int $id, array $data): int
+    {
+        $request = $this->putRequest("sites/{$id}/cron", $data);
+
+        return $request['event_id'];
+    }
+
+    public function disableCron(int $id): int
+    {
+        $request = $this->deleteRequest("sites/{$id}/cron");
+
+        return $request['event_id'];
+    }
+
+    public function enableBasicAuth(int $id, array $data): int
+    {
+        $request = $this->postRequest("sites/{$id}/basic-auth", $data);
+
+        return $request['event_id'];
+    }
+
+    public function updateBasicAuth(int $id, array $data): int
+    {
+        $request = $this->putRequest("sites/{$id}/basic-auth", $data);
+
+        return $request['event_id'];
+    }
+
+    public function disableBasicAuth(int $id): int
+    {
+        $request = $this->deleteRequest("sites/{$id}/basic-auth");
+
+        return $request['event_id'];
+    }
+
+    public function listPathRedirects(int $id): array
+    {
+        $redirects = $this->getRequest("sites/{$id}/path-redirects");
+
+        return $redirects['data'];
+    }
+
+    public function addPathRedirect(int $id, array $data): int
+    {
+        $request = $this->postRequest("sites/{$id}/path-redirects", $data);
+
+        return $request['event_id'];
+    }
+
+    public function deletePathRedirect(int $siteId, array $data): int
+    {
+        $request = $this->deleteRequest("sites/{$siteId}/path-redirects", $data);
+
+        return $request['event_id'];
+    }
+
+    public function updateBackupSettings(int $id, array $data): SiteResource
+    {
+        $site = $this->putRequest("sites/{$id}/backup-settings", $data);
+
+        return new SiteResource($site, $this->spinupwp);
+    }
+
+    public function updateBackupSchedule(int $id, array $data): SiteResource
+    {
+        $site = $this->putRequest("sites/{$id}/backup-schedule", $data);
+
+        return new SiteResource($site, $this->spinupwp);
+    }
+
+    public function updateSiteUser(int $id, array $data): int
+    {
+        $request = $this->putRequest("sites/{$id}/site-user", $data);
+
+        return $request['event_id'];
+    }
 }

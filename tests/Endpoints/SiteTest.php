@@ -315,4 +315,295 @@ class SiteTest extends TestCase
 
         $this->assertEquals(100, $this->siteEndpoint->deleteDomain(1, 2));
     }
+
+    public function test_connect_git_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/git', [
+            'form_params' => [
+                'repo'           => 'git@github.com:spinupwp/spinupwp-composer-site.git',
+                'branch'         => 'main',
+                'push_to_deploy' => true,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->connectGit(1, [
+            'repo'           => 'git@github.com:spinupwp/spinupwp-composer-site.git',
+            'branch'         => 'main',
+            'push_to_deploy' => true,
+        ]));
+    }
+
+    public function test_update_git_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/git', [
+            'form_params' => [
+                'branch' => 'production',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updateGit(1, ['branch' => 'production']));
+    }
+
+    public function test_update_git_request_without_a_dispatched_event(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/git', [
+            'form_params' => [
+                'push_to_deploy' => true,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": null}')
+        );
+
+        $this->assertNull($this->siteEndpoint->updateGit(1, ['push_to_deploy' => true]));
+    }
+
+    public function test_disconnect_git_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/git', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->disconnectGit(1));
+    }
+
+    public function test_enable_page_cache_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/page-cache', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->enablePageCache(1));
+    }
+
+    public function test_update_page_cache_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/page-cache', [
+            'form_params' => [
+                'duration'      => 1,
+                'duration_unit' => 'h',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updatePageCache(1, [
+            'duration'      => 1,
+            'duration_unit' => 'h',
+        ]));
+    }
+
+    public function test_disable_page_cache_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/page-cache', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->disablePageCache(1));
+    }
+
+    public function test_update_nginx_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/nginx', [
+            'form_params' => [
+                'uploads_directory_protected' => true,
+                'xmlrpc_protected'            => true,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_ids": [100, 101]}')
+        );
+
+        $eventIds = $this->siteEndpoint->updateNginx(1, [
+            'uploads_directory_protected' => true,
+            'xmlrpc_protected'            => true,
+        ]);
+        $this->assertSame([100, 101], $eventIds);
+    }
+
+    public function test_enable_cron_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/cron', [
+            'form_params' => [
+                'interval' => 5,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->enableCron(1, ['interval' => 5]));
+    }
+
+    public function test_update_cron_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/cron', [
+            'form_params' => [
+                'interval' => 15,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updateCron(1, ['interval' => 15]));
+    }
+
+    public function test_disable_cron_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/cron', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->disableCron(1));
+    }
+
+    public function test_enable_basic_auth_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/basic-auth', [
+            'form_params' => [
+                'username' => 'turnipjuice',
+                'password' => 'DK6Jrfj8gyWzL',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->enableBasicAuth(1, [
+            'username' => 'turnipjuice',
+            'password' => 'DK6Jrfj8gyWzL',
+        ]));
+    }
+
+    public function test_update_basic_auth_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/basic-auth', [
+            'form_params' => [
+                'username' => 'newuser',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updateBasicAuth(1, ['username' => 'newuser']));
+    }
+
+    public function test_disable_basic_auth_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/basic-auth', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->disableBasicAuth(1));
+    }
+
+    public function test_list_path_redirects_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('GET', 'sites/1/path-redirects', [])->andReturn(
+            new Response(200, [], '{"data": [{"id": 1, "from": "/old", "to": "/new", "type": "permanent"}]}')
+        );
+
+        $redirects = $this->siteEndpoint->listPathRedirects(1);
+        $this->assertCount(1, $redirects);
+        $this->assertEquals('/old', $redirects[0]['from']);
+    }
+
+    public function test_add_path_redirect_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/path-redirects', [
+            'form_params' => [
+                'from' => '/old-path',
+                'to'   => '/new-path',
+                'type' => 'permanent',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->addPathRedirect(1, [
+            'from' => '/old-path',
+            'to'   => '/new-path',
+            'type' => 'permanent',
+        ]));
+    }
+
+    public function test_delete_path_redirect_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/path-redirects', [
+            'form_params' => [
+                'from' => '/old-path',
+                'to'   => '/new-path',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->deletePathRedirect(1, [
+            'from' => '/old-path',
+            'to'   => '/new-path',
+        ]));
+    }
+
+    public function test_update_backup_settings_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/backup-settings', [
+            'form_params' => [
+                'storage_provider_id'     => 1,
+                'storage_provider_bucket' => 'turnipjuice-media',
+                'storage_provider_region' => 'nyc3',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"data": {"domain": "hellfish.media"}}')
+        );
+
+        $site = $this->siteEndpoint->updateBackupSettings(1, [
+            'storage_provider_id'     => 1,
+            'storage_provider_bucket' => 'turnipjuice-media',
+            'storage_provider_region' => 'nyc3',
+        ]);
+        $this->assertEquals('hellfish.media', $site->domain);
+    }
+
+    public function test_update_backup_schedule_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/backup-schedule', [
+            'form_params' => [
+                'daily_schedule' => [
+                    'time_of_day'      => [2],
+                    'backup_database'  => true,
+                    'backup_files'     => true,
+                    'retention_period' => 30,
+                ],
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"data": {"domain": "hellfish.media"}}')
+        );
+
+        $site = $this->siteEndpoint->updateBackupSchedule(1, [
+            'daily_schedule' => [
+                'time_of_day'      => [2],
+                'backup_database'  => true,
+                'backup_files'     => true,
+                'retention_period' => 30,
+            ],
+        ]);
+        $this->assertEquals('hellfish.media', $site->domain);
+    }
+
+    public function test_update_site_user_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/site-user', [
+            'form_params' => [
+                'authentication' => 'publickey',
+                'ssh_key_ids'    => [1],
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updateSiteUser(1, [
+            'authentication' => 'publickey',
+            'ssh_key_ids'    => [1],
+        ]));
+    }
 }

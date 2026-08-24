@@ -82,4 +82,99 @@ class Site extends Resource
     {
         return $this->spinupwp->sites->deleteDomain($this->id, $domainId);
     }
+
+    public function connectGit(array $data): int
+    {
+        return $this->spinupwp->sites->connectGit($this->id, $data);
+    }
+
+    public function updateGit(array $data): ?int
+    {
+        return $this->spinupwp->sites->updateGit($this->id, $data);
+    }
+
+    public function disconnectGit(): int
+    {
+        return $this->spinupwp->sites->disconnectGit($this->id);
+    }
+
+    public function enablePageCache(array $data = []): int
+    {
+        return $this->spinupwp->sites->enablePageCache($this->id, $data);
+    }
+
+    public function updatePageCache(array $data): int
+    {
+        return $this->spinupwp->sites->updatePageCache($this->id, $data);
+    }
+
+    public function disablePageCache(): int
+    {
+        return $this->spinupwp->sites->disablePageCache($this->id);
+    }
+
+    public function updateNginx(array $data): array
+    {
+        return $this->spinupwp->sites->updateNginx($this->id, $data);
+    }
+
+    public function enableCron(array $data): int
+    {
+        return $this->spinupwp->sites->enableCron($this->id, $data);
+    }
+
+    public function updateCron(array $data): int
+    {
+        return $this->spinupwp->sites->updateCron($this->id, $data);
+    }
+
+    public function disableCron(): int
+    {
+        return $this->spinupwp->sites->disableCron($this->id);
+    }
+
+    public function enableBasicAuth(array $data): int
+    {
+        return $this->spinupwp->sites->enableBasicAuth($this->id, $data);
+    }
+
+    public function updateBasicAuth(array $data): int
+    {
+        return $this->spinupwp->sites->updateBasicAuth($this->id, $data);
+    }
+
+    public function disableBasicAuth(): int
+    {
+        return $this->spinupwp->sites->disableBasicAuth($this->id);
+    }
+
+    public function listPathRedirects(): array
+    {
+        return $this->spinupwp->sites->listPathRedirects($this->id);
+    }
+
+    public function addPathRedirect(array $data): int
+    {
+        return $this->spinupwp->sites->addPathRedirect($this->id, $data);
+    }
+
+    public function deletePathRedirect(array $data): int
+    {
+        return $this->spinupwp->sites->deletePathRedirect($this->id, $data);
+    }
+
+    public function updateBackupSettings(array $data): self
+    {
+        return $this->spinupwp->sites->updateBackupSettings($this->id, $data);
+    }
+
+    public function updateBackupSchedule(array $data): self
+    {
+        return $this->spinupwp->sites->updateBackupSchedule($this->id, $data);
+    }
+
+    public function updateSiteUser(array $data): int
+    {
+        return $this->spinupwp->sites->updateSiteUser($this->id, $data);
+    }
 }
