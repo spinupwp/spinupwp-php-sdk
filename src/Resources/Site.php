@@ -33,6 +33,16 @@ class Site extends Resource
         return $this->spinupwp->sites->correctFilePermissions($this->id);
     }
 
+    public function disable(): int
+    {
+        return $this->spinupwp->sites->disable($this->id);
+    }
+
+    public function enable(): int
+    {
+        return $this->spinupwp->sites->enable($this->id);
+    }
+
     public function enableHttps(array $data): int
     {
         return $this->spinupwp->sites->enableHttps($this->id, $data);

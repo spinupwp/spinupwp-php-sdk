@@ -101,6 +101,12 @@ $eventId = $spinupwp->sites->purgeObjectCache($siteId);
 // Reset a site's file permissions
 $eventId = $spinupwp->sites->correctFilePermissions($siteId);
 
+// Disable a site so it no longer serves traffic
+$eventId = $spinupwp->sites->disable($siteId);
+
+// Enable a previously disabled site
+$eventId = $spinupwp->sites->enable($siteId);
+
 // Enable HTTPS
 $eventId = $spinupwp->sites->enableHttps($siteId, ['type' => 'webroot']);
 
@@ -162,6 +168,12 @@ $site->purgeObjectCache();
 
 // Reset a site's file permissions
 $site->correctFilePermissions();
+
+// Disable a site so it no longer serves traffic
+$site->disable();
+
+// Enable a previously disabled site
+$site->enable();
 
 // Enable HTTPS
 $site->enableHttps(['type' => 'webroot']);
