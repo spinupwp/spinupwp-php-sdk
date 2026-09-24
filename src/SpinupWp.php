@@ -7,12 +7,14 @@ use SpinupWp\Endpoints\Event;
 use SpinupWp\Endpoints\Server;
 use SpinupWp\Endpoints\Site;
 use SpinupWp\Endpoints\SshKey;
+use SpinupWp\Endpoints\StorageProvider;
 
 /**
  * @property Event $events
  * @property Server $servers
  * @property Site $sites
  * @property SshKey $sshKeys
+ * @property StorageProvider $storageProviders
  */
 class SpinupWp
 {
