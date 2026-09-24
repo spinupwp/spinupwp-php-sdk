@@ -87,7 +87,7 @@ $site = $spinupwp->sites->get($siteId);
 $site = $spinupwp->sites->create($serverId, []);
 
 // Delete a site
-$eventId = $spinupwp->sites->delete($siteId);
+$eventId = $spinupwp->sites->delete($siteId, $deleteDatabase, $deleteBackups, $deleteDnsRecords);
 
 // Run a git deployment
 $eventId = $spinupwp->sites->gitDeploy($siteId);
@@ -256,7 +256,7 @@ $eventId = $spinupwp->sites->updateSiteUser($siteId, [
 On a `Site` instance you may also call:
 ```php
 // Delete the current site
-$site->delete();
+$site->delete($deleteDatabase, $deleteBackups, $deleteDnsRecords);
 
 // Run a git deployment
 $site->gitDeploy();
@@ -374,6 +374,12 @@ $sshKeys = $spinupwp->sshKeys->list();
 ```php
 // Return a collection of the storage providers configured on your team
 $storageProviders = $spinupwp->storageProviders->list();
+```
+
+### DNS Providers
+```php
+// Return a collection of the DNS providers configured on your team
+$dnsProviders = $spinupwp->dnsProviders->list();
 ```
 
 ### Resource Collections

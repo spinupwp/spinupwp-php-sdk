@@ -3,6 +3,7 @@
 namespace SpinupWp;
 
 use GuzzleHttp\Client as HttpClient;
+use SpinupWp\Endpoints\DnsProvider;
 use SpinupWp\Endpoints\Event;
 use SpinupWp\Endpoints\Server;
 use SpinupWp\Endpoints\Site;
@@ -10,6 +11,7 @@ use SpinupWp\Endpoints\SshKey;
 use SpinupWp\Endpoints\StorageProvider;
 
 /**
+ * @property DnsProvider $dnsProviders
  * @property Event $events
  * @property Server $servers
  * @property Site $sites
