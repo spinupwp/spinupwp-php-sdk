@@ -9,6 +9,8 @@ use SpinupWp\Exceptions\RateLimitException;
 use SpinupWp\Exceptions\UnauthorizedException;
 use SpinupWp\Exceptions\ValidationException;
 use SpinupWp\Resources\Event as EventResource;
+use SpinupWp\Resources\PathRedirect as PathRedirectResource;
+use SpinupWp\Resources\ResourceCollection;
 use SpinupWp\SpinupWp;
 
 class SiteTest extends TestCase
@@ -499,13 +501,25 @@ class SiteTest extends TestCase
 
     public function test_list_path_redirects_request(): void
     {
-        $this->client->shouldReceive('request')->once()->with('GET', 'sites/1/path-redirects', [])->andReturn(
-            new Response(200, [], '{"data": [{"id": 1, "from": "/old", "to": "/new", "type": "permanent"}]}')
+        $this->client->shouldReceive('request')->once()->with('GET', 'sites/1/path-redirects?page=1', [])->andReturn(
+            new Response(200, [], '{"data": [{"id": 1, "from": "/old", "to": "/new", "type": "permanent"}], "pagination": {"previous": null, "next": null, "count": 1}}')
         );
 
         $redirects = $this->siteEndpoint->listPathRedirects(1);
+        $this->assertInstanceOf(ResourceCollection::class, $redirects);
         $this->assertCount(1, $redirects);
-        $this->assertEquals('/old', $redirects[0]['from']);
+        $this->assertInstanceOf(PathRedirectResource::class, $redirects->toArray()[0]);
+        $this->assertEquals('/old', $redirects->toArray()[0]->from);
+    }
+
+    public function test_list_path_redirects_request_with_pagination_parameters(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('GET', 'sites/1/path-redirects?page=2&limit=100', [])->andReturn(
+            new Response(200, [], '{"data": [{"id": 1, "from": "/old", "to": "/new", "type": "permanent"}], "pagination": {"previous": null, "next": null, "count": 1}}')
+        );
+
+        $redirects = $this->siteEndpoint->listPathRedirects(1, 2, ['limit' => 100]);
+        $this->assertCount(1, $redirects);
     }
 
     public function test_add_path_redirect_request(): void

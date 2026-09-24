@@ -2,6 +2,9 @@
 
 namespace SpinupWp\Endpoints;
 
+use SpinupWp\Resources\ResourceCollection;
+use SpinupWp\Resources\SshKey as SshKeyResource;
+
 class SshKey extends Endpoint
 {
     public function get(): string
@@ -11,10 +14,16 @@ class SshKey extends Endpoint
         return $response['key'];
     }
 
-    public function list(): array
+    public function list(int $page = 1, array $parameters = []): ResourceCollection
     {
-        $sshKeys = $this->getRequest('ssh-keys');
+        $sshKeys = $this->getRequest('ssh-keys', array_merge([
+            'page' => $page,
+        ], $parameters));
 
-        return $sshKeys['data'];
+        return $this->transformCollection(
+            $sshKeys['data'],
+            SshKeyResource::class,
+            $this->getPaginator($sshKeys['pagination'], $parameters),
+        );
     }
 }

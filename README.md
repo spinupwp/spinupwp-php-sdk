@@ -208,7 +208,7 @@ $eventId = $spinupwp->sites->updateBasicAuth($siteId, ['username' => 'newuser'])
 // Disable basic auth
 $eventId = $spinupwp->sites->disableBasicAuth($siteId);
 
-// List path redirects
+// Return a collection of path redirects
 $redirects = $spinupwp->sites->listPathRedirects($siteId);
 
 // Add a path redirect
@@ -354,13 +354,13 @@ $event = $spinupwp->events->get($eventId);
 // Return SpinupWP's SSH Public Key
 $key = $spinupwp->sshKeys->get();
 
-// List the SSH keys configured on your team
+// Return a collection of the SSH keys configured on your team
 $sshKeys = $spinupwp->sshKeys->list();
 ```
 
 ### Storage Providers
 ```php
-// List the storage providers configured on your team
+// Return a collection of the storage providers configured on your team
 $storageProviders = $spinupwp->storageProviders->list();
 ```
 

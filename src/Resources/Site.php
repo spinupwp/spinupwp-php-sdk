@@ -148,9 +148,9 @@ class Site extends Resource
         return $this->spinupwp->sites->disableBasicAuth($this->id);
     }
 
-    public function listPathRedirects(): array
+    public function listPathRedirects(int $page = 1, array $parameters = []): ResourceCollection
     {
-        return $this->spinupwp->sites->listPathRedirects($this->id);
+        return $this->spinupwp->sites->listPathRedirects($this->id, $page, $parameters);
     }
 
     public function addPathRedirect(array $data): int

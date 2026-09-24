@@ -2,6 +2,7 @@
 
 namespace SpinupWp\Endpoints;
 
+use SpinupWp\Resources\PathRedirect as PathRedirectResource;
 use SpinupWp\Resources\ResourceCollection;
 use SpinupWp\Resources\Site as SiteResource;
 
@@ -254,11 +255,17 @@ class Site extends Endpoint
         return $request['event_id'];
     }
 
-    public function listPathRedirects(int $id): array
+    public function listPathRedirects(int $id, int $page = 1, array $parameters = []): ResourceCollection
     {
-        $redirects = $this->getRequest("sites/{$id}/path-redirects");
+        $redirects = $this->getRequest("sites/{$id}/path-redirects", array_merge([
+            'page' => $page,
+        ], $parameters));
 
-        return $redirects['data'];
+        return $this->transformCollection(
+            $redirects['data'],
+            PathRedirectResource::class,
+            $this->getPaginator($redirects['pagination'], $parameters),
+        );
     }
 
     public function addPathRedirect(int $id, array $data): int
