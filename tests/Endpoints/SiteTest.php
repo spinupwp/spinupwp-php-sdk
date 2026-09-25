@@ -88,14 +88,30 @@ class SiteTest extends TestCase
     {
         $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1', [
             'form_params' => [
-                'delete_database' => false,
-                'delete_backups'  => false,
+                'delete_database'    => false,
+                'delete_backups'     => false,
+                'delete_dns_records' => false,
             ],
         ])->andReturn(
             new Response(200, [], '{"event_id": 100}')
         );
 
         $this->assertEquals(100, $this->siteEndpoint->delete(1));
+    }
+
+    public function test_delete_request_with_dns_records(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1', [
+            'form_params' => [
+                'delete_database'    => false,
+                'delete_backups'     => false,
+                'delete_dns_records' => true,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->delete(1, false, false, true));
     }
 
     public function test_git_deploy_request(): void
