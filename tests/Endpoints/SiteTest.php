@@ -1,6 +1,9 @@
 <?php
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use SpinupWp\Endpoints\Site;
@@ -73,7 +76,7 @@ class SiteTest extends TestCase
     public function test_create_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites', [
-            'form_params' => [
+            'json' => [
                 'domain'    => 'hellfish.media',
                 'server_id' => 1,
             ],
@@ -88,7 +91,7 @@ class SiteTest extends TestCase
     public function test_delete_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1', [
-            'form_params' => [
+            'json' => [
                 'delete_database' => false,
                 'delete_backups'  => false,
             ],
@@ -138,7 +141,7 @@ class SiteTest extends TestCase
     public function test_handling_validation_errors(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites', [
-            'form_params' => [
+            'json' => [
                 'server_id' => 1,
             ],
         ])->andReturn(
@@ -190,7 +193,7 @@ class SiteTest extends TestCase
     public function test_enable_https_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/https', [
-            'form_params' => [
+            'json' => [
                 'type' => 'webroot',
             ],
         ])->andReturn(
@@ -203,7 +206,7 @@ class SiteTest extends TestCase
     public function test_update_https_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/https', [
-            'form_params' => [
+            'json' => [
                 'type'        => 'custom',
                 'certificate' => '-----BEGIN CERTIFICATE-----',
                 'private_key' => '-----BEGIN PRIVATE KEY-----',
@@ -231,7 +234,7 @@ class SiteTest extends TestCase
     public function test_update_php_version_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/php', [
-            'form_params' => [
+            'json' => [
                 'php_version' => '8.3',
             ],
         ])->andReturn(
@@ -273,7 +276,7 @@ class SiteTest extends TestCase
     public function test_add_domain_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/domains', [
-            'form_params' => [
+            'json' => [
                 'domain' => 'www.hellfish.media',
             ],
         ])->andReturn(
@@ -288,7 +291,7 @@ class SiteTest extends TestCase
     public function test_update_domain_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/domains/2', [
-            'form_params' => [
+            'json' => [
                 'redirect' => [
                     'enabled'     => true,
                     'type'        => 301,
@@ -321,7 +324,7 @@ class SiteTest extends TestCase
     public function test_connect_git_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/git', [
-            'form_params' => [
+            'json' => [
                 'repo'           => 'git@github.com:spinupwp/spinupwp-composer-site.git',
                 'branch'         => 'main',
                 'push_to_deploy' => true,
@@ -340,7 +343,7 @@ class SiteTest extends TestCase
     public function test_update_git_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/git', [
-            'form_params' => [
+            'json' => [
                 'branch' => 'production',
             ],
         ])->andReturn(
@@ -353,7 +356,7 @@ class SiteTest extends TestCase
     public function test_update_git_request_without_a_dispatched_event(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/git', [
-            'form_params' => [
+            'json' => [
                 'push_to_deploy' => true,
             ],
         ])->andReturn(
@@ -384,7 +387,7 @@ class SiteTest extends TestCase
     public function test_update_page_cache_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/page-cache', [
-            'form_params' => [
+            'json' => [
                 'duration'      => 1,
                 'duration_unit' => 'h',
             ],
@@ -410,7 +413,7 @@ class SiteTest extends TestCase
     public function test_update_nginx_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/nginx', [
-            'form_params' => [
+            'json' => [
                 'uploads_directory_protected' => true,
                 'xmlrpc_protected'            => true,
             ],
@@ -428,7 +431,7 @@ class SiteTest extends TestCase
     public function test_enable_cron_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/cron', [
-            'form_params' => [
+            'json' => [
                 'interval' => 5,
             ],
         ])->andReturn(
@@ -441,7 +444,7 @@ class SiteTest extends TestCase
     public function test_update_cron_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/cron', [
-            'form_params' => [
+            'json' => [
                 'interval' => 15,
             ],
         ])->andReturn(
@@ -463,7 +466,7 @@ class SiteTest extends TestCase
     public function test_enable_basic_auth_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/basic-auth', [
-            'form_params' => [
+            'json' => [
                 'username' => 'turnipjuice',
                 'password' => 'DK6Jrfj8gyWzL',
             ],
@@ -480,7 +483,7 @@ class SiteTest extends TestCase
     public function test_update_basic_auth_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/basic-auth', [
-            'form_params' => [
+            'json' => [
                 'username' => 'newuser',
             ],
         ])->andReturn(
@@ -488,6 +491,19 @@ class SiteTest extends TestCase
         );
 
         $this->assertEquals(100, $this->siteEndpoint->updateBasicAuth(1, ['username' => 'newuser']));
+    }
+
+    public function test_update_basic_auth_request_without_a_dispatched_event(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/basic-auth', [
+            'json' => [
+                'username' => 'turnipjuice',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": null}')
+        );
+
+        $this->assertNull($this->siteEndpoint->updateBasicAuth(1, ['username' => 'turnipjuice']));
     }
 
     public function test_disable_basic_auth_request(): void
@@ -525,7 +541,7 @@ class SiteTest extends TestCase
     public function test_add_path_redirect_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/path-redirects', [
-            'form_params' => [
+            'json' => [
                 'from' => '/old-path',
                 'to'   => '/new-path',
                 'type' => 'permanent',
@@ -544,7 +560,7 @@ class SiteTest extends TestCase
     public function test_delete_path_redirect_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/path-redirects', [
-            'form_params' => [
+            'json' => [
                 'from' => '/old-path',
                 'to'   => '/new-path',
             ],
@@ -561,7 +577,7 @@ class SiteTest extends TestCase
     public function test_update_backup_settings_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/backup-settings', [
-            'form_params' => [
+            'json' => [
                 'storage_provider_id'     => 1,
                 'storage_provider_bucket' => 'turnipjuice-media',
                 'storage_provider_region' => 'nyc3',
@@ -581,7 +597,7 @@ class SiteTest extends TestCase
     public function test_update_backup_schedule_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/backup-schedule', [
-            'form_params' => [
+            'json' => [
                 'daily_schedule' => [
                     'time_of_day'      => [2],
                     'backup_database'  => true,
@@ -604,10 +620,34 @@ class SiteTest extends TestCase
         $this->assertEquals('hellfish.media', $site->domain);
     }
 
+    public function test_update_backup_schedule_request_sends_empty_arrays_and_nulls(): void
+    {
+        $history = [];
+        $handler = HandlerStack::create(new MockHandler([
+            new Response(200, [], '{"data": {"domain": "hellfish.media"}}'),
+        ]));
+        $handler->push(Middleware::history($history));
+
+        $spinupwp = new SpinupWp('123');
+        $spinupwp->setClient(new Client(['handler' => $handler, 'http_errors' => false]));
+
+        $spinupwp->sites->updateBackupSchedule(1, [
+            'daily_schedule'  => ['time_of_day' => []],
+            'weekly_schedule' => ['retention_period' => null],
+        ]);
+
+        $request = $history[0]['request'];
+        $this->assertEquals('application/json', $request->getHeaderLine('Content-Type'));
+        $this->assertEquals(
+            '{"daily_schedule":{"time_of_day":[]},"weekly_schedule":{"retention_period":null}}',
+            (string) $request->getBody()
+        );
+    }
+
     public function test_update_site_user_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/site-user', [
-            'form_params' => [
+            'json' => [
                 'authentication' => 'publickey',
                 'ssh_key_ids'    => [1],
             ],
@@ -619,5 +659,18 @@ class SiteTest extends TestCase
             'authentication' => 'publickey',
             'ssh_key_ids'    => [1],
         ]));
+    }
+
+    public function test_update_site_user_request_without_a_dispatched_event(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/site-user', [
+            'json' => [
+                'authentication' => 'password',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": null}')
+        );
+
+        $this->assertNull($this->siteEndpoint->updateSiteUser(1, ['authentication' => 'password']));
     }
 }

@@ -29,7 +29,7 @@ abstract class Endpoint
         $response = $this->spinupwp->getClient()->request(
             $verb,
             $uri,
-            empty($payload) ? [] : ['form_params' => $payload]
+            empty($payload) ? [] : ['json' => $payload]
         );
 
         $statusCode = $response->getStatusCode();

@@ -46,7 +46,7 @@ class ServerTest extends TestCase
     public function test_create_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'servers', [
-            'form_params' => [
+            'json' => [
                 'hostname' => 'hellfish-media',
             ],
         ])->andReturn(
@@ -60,7 +60,7 @@ class ServerTest extends TestCase
     public function test_create_custom_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'servers/custom', [
-            'form_params' => [
+            'json' => [
                 'hostname' => 'hellfish-media',
             ],
         ])->andReturn(
@@ -74,7 +74,7 @@ class ServerTest extends TestCase
     public function test_delete_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('DELETE', 'servers/1', [
-            'form_params' => [
+            'json' => [
                 'delete_server_on_provider' => false,
             ],
         ])->andReturn(
