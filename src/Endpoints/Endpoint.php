@@ -100,7 +100,7 @@ abstract class Endpoint
         return $this->request('DELETE', $uri, $payload);
     }
 
-    protected function transformCollection(array $data, string $class, Paginator $paginator = null): ResourceCollection
+    protected function transformCollection(array $data, string $class, ?Paginator $paginator = null): ResourceCollection
     {
         return new ResourceCollection($data, $class, $this->spinupwp, $paginator);
     }

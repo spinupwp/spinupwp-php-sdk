@@ -8,7 +8,7 @@ class TimeoutException extends Exception
 {
     protected ?array $output;
 
-    public function __construct(array $output = null)
+    public function __construct(?array $output = null)
     {
         parent::__construct('Script timed out while waiting for the event to complete.');
 

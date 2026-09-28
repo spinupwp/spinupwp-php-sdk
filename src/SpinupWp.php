@@ -26,7 +26,7 @@ class SpinupWp
 
     protected array $endpoints = [];
 
-    public function __construct(string $apiKey = null, HttpClient $client = null)
+    public function __construct(?string $apiKey = null, ?HttpClient $client = null)
     {
         $this->apiKey = $apiKey ?: '';
 
@@ -45,7 +45,7 @@ class SpinupWp
         return !empty($this->apiKey);
     }
 
-    public function setClient(HttpClient $client = null): self
+    public function setClient(?HttpClient $client = null): self
     {
         $this->client = $client ?: new HttpClient([
             'base_uri'    => self::API_URL,
