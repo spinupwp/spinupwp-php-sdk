@@ -29,7 +29,7 @@ abstract class Endpoint
         $response = $this->spinupwp->getClient()->request(
             $verb,
             $uri,
-            empty($payload) ? [] : ['form_params' => $payload]
+            empty($payload) ? [] : ['json' => $payload]
         );
 
         $statusCode = $response->getStatusCode();
@@ -100,7 +100,7 @@ abstract class Endpoint
         return $this->request('DELETE', $uri, $payload);
     }
 
-    protected function transformCollection(array $data, string $class, Paginator $paginator = null): ResourceCollection
+    protected function transformCollection(array $data, string $class, ?Paginator $paginator = null): ResourceCollection
     {
         return new ResourceCollection($data, $class, $this->spinupwp, $paginator);
     }

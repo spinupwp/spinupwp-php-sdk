@@ -1,6 +1,9 @@
 <?php
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use SpinupWp\Endpoints\Site;
@@ -10,6 +13,8 @@ use SpinupWp\Exceptions\RateLimitException;
 use SpinupWp\Exceptions\UnauthorizedException;
 use SpinupWp\Exceptions\ValidationException;
 use SpinupWp\Resources\Event as EventResource;
+use SpinupWp\Resources\PathRedirect as PathRedirectResource;
+use SpinupWp\Resources\ResourceCollection;
 use SpinupWp\SpinupWp;
 
 class SiteTest extends TestCase
@@ -72,7 +77,7 @@ class SiteTest extends TestCase
     public function test_create_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites', [
-            'form_params' => [
+            'json' => [
                 'domain'    => 'hellfish.media',
                 'server_id' => 1,
             ],
@@ -87,7 +92,7 @@ class SiteTest extends TestCase
     public function test_delete_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1', [
-            'form_params' => [
+            'json' => [
                 'delete_database' => false,
                 'delete_backups'  => false,
             ],
@@ -177,7 +182,7 @@ class SiteTest extends TestCase
     public function test_handling_validation_errors(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites', [
-            'form_params' => [
+            'json' => [
                 'server_id' => 1,
             ],
         ])->andReturn(
@@ -229,7 +234,7 @@ class SiteTest extends TestCase
     public function test_enable_https_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/https', [
-            'form_params' => [
+            'json' => [
                 'type' => 'webroot',
             ],
         ])->andReturn(
@@ -242,7 +247,7 @@ class SiteTest extends TestCase
     public function test_update_https_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/https', [
-            'form_params' => [
+            'json' => [
                 'type'        => 'custom',
                 'certificate' => '-----BEGIN CERTIFICATE-----',
                 'private_key' => '-----BEGIN PRIVATE KEY-----',
@@ -270,7 +275,7 @@ class SiteTest extends TestCase
     public function test_update_php_version_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/php', [
-            'form_params' => [
+            'json' => [
                 'php_version' => '8.3',
             ],
         ])->andReturn(
@@ -312,7 +317,7 @@ class SiteTest extends TestCase
     public function test_add_domain_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/domains', [
-            'form_params' => [
+            'json' => [
                 'domain' => 'www.hellfish.media',
             ],
         ])->andReturn(
@@ -327,7 +332,7 @@ class SiteTest extends TestCase
     public function test_update_domain_request(): void
     {
         $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/domains/2', [
-            'form_params' => [
+            'json' => [
                 'redirect' => [
                     'enabled'     => true,
                     'type'        => 301,
@@ -355,5 +360,358 @@ class SiteTest extends TestCase
         );
 
         $this->assertEquals(100, $this->siteEndpoint->deleteDomain(1, 2));
+    }
+
+    public function test_connect_git_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/git', [
+            'json' => [
+                'repo'           => 'git@github.com:spinupwp/spinupwp-composer-site.git',
+                'branch'         => 'main',
+                'push_to_deploy' => true,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->connectGit(1, [
+            'repo'           => 'git@github.com:spinupwp/spinupwp-composer-site.git',
+            'branch'         => 'main',
+            'push_to_deploy' => true,
+        ]));
+    }
+
+    public function test_update_git_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/git', [
+            'json' => [
+                'branch' => 'production',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updateGit(1, ['branch' => 'production']));
+    }
+
+    public function test_update_git_request_without_a_dispatched_event(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/git', [
+            'json' => [
+                'push_to_deploy' => true,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": null}')
+        );
+
+        $this->assertNull($this->siteEndpoint->updateGit(1, ['push_to_deploy' => true]));
+    }
+
+    public function test_disconnect_git_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/git', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->disconnectGit(1));
+    }
+
+    public function test_enable_page_cache_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/page-cache', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->enablePageCache(1));
+    }
+
+    public function test_update_page_cache_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/page-cache', [
+            'json' => [
+                'duration'      => 1,
+                'duration_unit' => 'h',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updatePageCache(1, [
+            'duration'      => 1,
+            'duration_unit' => 'h',
+        ]));
+    }
+
+    public function test_disable_page_cache_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/page-cache', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->disablePageCache(1));
+    }
+
+    public function test_update_nginx_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/nginx', [
+            'json' => [
+                'uploads_directory_protected' => true,
+                'xmlrpc_protected'            => true,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_ids": [100, 101]}')
+        );
+
+        $eventIds = $this->siteEndpoint->updateNginx(1, [
+            'uploads_directory_protected' => true,
+            'xmlrpc_protected'            => true,
+        ]);
+        $this->assertSame([100, 101], $eventIds);
+    }
+
+    public function test_enable_cron_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/cron', [
+            'json' => [
+                'interval' => 5,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->enableCron(1, ['interval' => 5]));
+    }
+
+    public function test_update_cron_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/cron', [
+            'json' => [
+                'interval' => 15,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updateCron(1, ['interval' => 15]));
+    }
+
+    public function test_disable_cron_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/cron', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->disableCron(1));
+    }
+
+    public function test_enable_basic_auth_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/basic-auth', [
+            'json' => [
+                'username' => 'turnipjuice',
+                'password' => 'DK6Jrfj8gyWzL',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->enableBasicAuth(1, [
+            'username' => 'turnipjuice',
+            'password' => 'DK6Jrfj8gyWzL',
+        ]));
+    }
+
+    public function test_update_basic_auth_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/basic-auth', [
+            'json' => [
+                'username' => 'newuser',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updateBasicAuth(1, ['username' => 'newuser']));
+    }
+
+    public function test_update_basic_auth_request_without_a_dispatched_event(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/basic-auth', [
+            'json' => [
+                'username' => 'turnipjuice',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": null}')
+        );
+
+        $this->assertNull($this->siteEndpoint->updateBasicAuth(1, ['username' => 'turnipjuice']));
+    }
+
+    public function test_disable_basic_auth_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/basic-auth', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->disableBasicAuth(1));
+    }
+
+    public function test_list_path_redirects_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('GET', 'sites/1/path-redirects?page=1', [])->andReturn(
+            new Response(200, [], '{"data": [{"id": 1, "from": "/old", "to": "/new", "type": "permanent"}], "pagination": {"previous": null, "next": null, "count": 1}}')
+        );
+
+        $redirects = $this->siteEndpoint->listPathRedirects(1);
+        $this->assertInstanceOf(ResourceCollection::class, $redirects);
+        $this->assertCount(1, $redirects);
+        $this->assertInstanceOf(PathRedirectResource::class, $redirects->toArray()[0]);
+        $this->assertEquals('/old', $redirects->toArray()[0]->from);
+    }
+
+    public function test_list_path_redirects_request_with_pagination_parameters(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('GET', 'sites/1/path-redirects?page=2&limit=100', [])->andReturn(
+            new Response(200, [], '{"data": [{"id": 1, "from": "/old", "to": "/new", "type": "permanent"}], "pagination": {"previous": null, "next": null, "count": 1}}')
+        );
+
+        $redirects = $this->siteEndpoint->listPathRedirects(1, 2, ['limit' => 100]);
+        $this->assertCount(1, $redirects);
+    }
+
+    public function test_add_path_redirect_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/path-redirects', [
+            'json' => [
+                'from' => '/old-path',
+                'to'   => '/new-path',
+                'type' => 'permanent',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->addPathRedirect(1, [
+            'from' => '/old-path',
+            'to'   => '/new-path',
+            'type' => 'permanent',
+        ]));
+    }
+
+    public function test_delete_path_redirect_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/path-redirects', [
+            'json' => [
+                'from' => '/old-path',
+                'to'   => '/new-path',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->deletePathRedirect(1, [
+            'from' => '/old-path',
+            'to'   => '/new-path',
+        ]));
+    }
+
+    public function test_update_backup_settings_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/backup-settings', [
+            'json' => [
+                'storage_provider_id'     => 1,
+                'storage_provider_bucket' => 'turnipjuice-media',
+                'storage_provider_region' => 'nyc3',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"data": {"domain": "hellfish.media"}}')
+        );
+
+        $site = $this->siteEndpoint->updateBackupSettings(1, [
+            'storage_provider_id'     => 1,
+            'storage_provider_bucket' => 'turnipjuice-media',
+            'storage_provider_region' => 'nyc3',
+        ]);
+        $this->assertEquals('hellfish.media', $site->domain);
+    }
+
+    public function test_update_backup_schedule_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/backup-schedule', [
+            'json' => [
+                'daily_schedule' => [
+                    'time_of_day'      => [2],
+                    'backup_database'  => true,
+                    'backup_files'     => true,
+                    'retention_period' => 30,
+                ],
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"data": {"domain": "hellfish.media"}}')
+        );
+
+        $site = $this->siteEndpoint->updateBackupSchedule(1, [
+            'daily_schedule' => [
+                'time_of_day'      => [2],
+                'backup_database'  => true,
+                'backup_files'     => true,
+                'retention_period' => 30,
+            ],
+        ]);
+        $this->assertEquals('hellfish.media', $site->domain);
+    }
+
+    public function test_update_backup_schedule_request_sends_empty_arrays_and_nulls(): void
+    {
+        $history = [];
+        $handler = HandlerStack::create(new MockHandler([
+            new Response(200, [], '{"data": {"domain": "hellfish.media"}}'),
+        ]));
+        $handler->push(Middleware::history($history));
+
+        $spinupwp = new SpinupWp('123');
+        $spinupwp->setClient(new Client(['handler' => $handler, 'http_errors' => false]));
+
+        $spinupwp->sites->updateBackupSchedule(1, [
+            'daily_schedule'  => ['time_of_day' => []],
+            'weekly_schedule' => ['retention_period' => null],
+        ]);
+
+        $request = $history[0]['request'];
+        $this->assertEquals('application/json', $request->getHeaderLine('Content-Type'));
+        $this->assertEquals(
+            '{"daily_schedule":{"time_of_day":[]},"weekly_schedule":{"retention_period":null}}',
+            (string) $request->getBody()
+        );
+    }
+
+    public function test_update_site_user_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/site-user', [
+            'json' => [
+                'authentication' => 'publickey',
+                'ssh_key_ids'    => [1],
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->updateSiteUser(1, [
+            'authentication' => 'publickey',
+            'ssh_key_ids'    => [1],
+        ]));
+    }
+
+    public function test_update_site_user_request_without_a_dispatched_event(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('PUT', 'sites/1/site-user', [
+            'json' => [
+                'authentication' => 'password',
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": null}')
+        );
+
+        $this->assertNull($this->siteEndpoint->updateSiteUser(1, ['authentication' => 'password']));
     }
 }
