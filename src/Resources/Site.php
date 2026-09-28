@@ -138,7 +138,7 @@ class Site extends Resource
         return $this->spinupwp->sites->enableBasicAuth($this->id, $data);
     }
 
-    public function updateBasicAuth(array $data): int
+    public function updateBasicAuth(array $data): ?int
     {
         return $this->spinupwp->sites->updateBasicAuth($this->id, $data);
     }
@@ -173,7 +173,7 @@ class Site extends Resource
         return $this->spinupwp->sites->updateBackupSchedule($this->id, $data);
     }
 
-    public function updateSiteUser(array $data): int
+    public function updateSiteUser(array $data): ?int
     {
         return $this->spinupwp->sites->updateSiteUser($this->id, $data);
     }

@@ -241,7 +241,7 @@ class Site extends Endpoint
         return $request['event_id'];
     }
 
-    public function updateBasicAuth(int $id, array $data): int
+    public function updateBasicAuth(int $id, array $data): ?int
     {
         $request = $this->putRequest("sites/{$id}/basic-auth", $data);
 
@@ -296,7 +296,7 @@ class Site extends Endpoint
         return new SiteResource($site, $this->spinupwp);
     }
 
-    public function updateSiteUser(int $id, array $data): int
+    public function updateSiteUser(int $id, array $data): ?int
     {
         $request = $this->putRequest("sites/{$id}/site-user", $data);
 
