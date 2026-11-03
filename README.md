@@ -86,8 +86,11 @@ $site = $spinupwp->sites->get($siteId);
 // Create and return a new site
 $site = $spinupwp->sites->create($serverId, []);
 
+// Pass a dns_provider_id with the other site fields to have the DNS record and HTTPS certificate managed by a DNS provider
+$site = $spinupwp->sites->create($serverId, ['dns_provider_id' => $dnsProviderId]);
+
 // Delete a site
-$eventId = $spinupwp->sites->delete($siteId);
+$eventId = $spinupwp->sites->delete($siteId, $deleteDatabase, $deleteBackups, $deleteDnsRecords);
 
 // Run a git deployment
 $eventId = $spinupwp->sites->gitDeploy($siteId);
@@ -109,6 +112,9 @@ $eventId = $spinupwp->sites->enable($siteId);
 
 // Enable HTTPS
 $eventId = $spinupwp->sites->enableHttps($siteId, ['type' => 'webroot']);
+
+// Enable HTTPS using DNS validation through a DNS provider
+$eventId = $spinupwp->sites->enableHttps($siteId, ['type' => 'dns', 'dns_provider_id' => $dnsProviderId]);
 
 // Update HTTPS settings
 $eventId = $spinupwp->sites->updateHttps($siteId, [
@@ -256,7 +262,7 @@ $eventId = $spinupwp->sites->updateSiteUser($siteId, [
 On a `Site` instance you may also call:
 ```php
 // Delete the current site
-$site->delete();
+$site->delete($deleteDatabase, $deleteBackups, $deleteDnsRecords);
 
 // Run a git deployment
 $site->gitDeploy();
@@ -278,6 +284,7 @@ $site->enable();
 
 // Enable HTTPS
 $site->enableHttps(['type' => 'webroot']);
+$site->enableHttps(['type' => 'dns', 'dns_provider_id' => $dnsProviderId]);
 
 // Update HTTPS settings
 $site->updateHttps(['type' => 'custom', 'certificate' => '...', 'private_key' => '...']);
@@ -374,6 +381,12 @@ $sshKeys = $spinupwp->sshKeys->list();
 ```php
 // Return a collection of the storage providers configured on your team
 $storageProviders = $spinupwp->storageProviders->list();
+```
+
+### DNS Providers
+```php
+// Return a collection of the DNS providers configured on your team
+$dnsProviders = $spinupwp->dnsProviders->list();
 ```
 
 ### Resource Collections

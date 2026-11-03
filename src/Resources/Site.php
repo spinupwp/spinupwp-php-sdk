@@ -4,12 +4,13 @@ namespace SpinupWp\Resources;
 
 class Site extends Resource
 {
-    public function delete(bool $deleteDatabase = false, bool $deleteBackups = false): int
+    public function delete(bool $deleteDatabase = false, bool $deleteBackups = false, bool $deleteDnsRecords = false): int
     {
         return $this->spinupwp->sites->delete(
             $this->id,
             $deleteDatabase,
             $deleteBackups,
+            $deleteDnsRecords,
         );
     }
 
