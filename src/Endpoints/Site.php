@@ -317,4 +317,18 @@ class Site extends Endpoint
 
         return $request['event_id'];
     }
+
+    public function addSiteUserSshKey(int $id, int $sshKeyId): ?int
+    {
+        $request = $this->postRequest("sites/{$id}/site-user/ssh-keys", ['ssh_key_id' => $sshKeyId]);
+
+        return $request['event_id'];
+    }
+
+    public function removeSiteUserSshKey(int $id, int $sshKeyId): ?int
+    {
+        $request = $this->deleteRequest("sites/{$id}/site-user/ssh-keys/{$sshKeyId}");
+
+        return $request['event_id'];
+    }
 }

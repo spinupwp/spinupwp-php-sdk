@@ -253,11 +253,16 @@ $site = $spinupwp->sites->updateBackupSchedule($siteId, [
     ],
 ]);
 
-// Update site user authentication
+// Update site user authentication. ssh_key_ids replaces the site user's SSH keys.
 $eventId = $spinupwp->sites->updateSiteUser($siteId, [
     'authentication' => 'publickey',
     'ssh_key_ids' => [1],
 ]);
+
+// Add or remove one site user SSH key, keeping the others.
+// Returns null when the key is already authorized (add) or isn't (remove).
+$eventId = $spinupwp->sites->addSiteUserSshKey($siteId, $sshKeyId);
+$eventId = $spinupwp->sites->removeSiteUserSshKey($siteId, $sshKeyId);
 ```
 On a `Site` instance you may also call:
 ```php
@@ -357,6 +362,13 @@ $site->updateBackupSchedule(['daily_schedule' => ['time_of_day' => [2]]]);
 
 // Update site user authentication
 $site->updateSiteUser(['authentication' => 'publickey', 'ssh_key_ids' => [1]]);
+
+// Add or remove one site user SSH key
+$site->addSiteUserSshKey($sshKeyId);
+$site->removeSiteUserSshKey($sshKeyId);
+
+// The site user's authorized SSH keys
+$site->ssh_keys; // [['id' => 1, 'name' => 'CI deploy', 'fingerprint' => '...'], ...]
 ```
 
 ### Events
@@ -375,6 +387,20 @@ $key = $spinupwp->sshKeys->get();
 
 // Return a collection of the SSH keys configured on your team
 $sshKeys = $spinupwp->sshKeys->list();
+
+// Add an SSH key to your team
+$sshKey = $spinupwp->sshKeys->create([
+    'name' => "Vincent's laptop",
+    'publickey' => 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...',
+]);
+
+// Delete an SSH key from your team. It's also removed from every site user and sudo user
+// that has it. Returns the IDs of those update events.
+$eventIds = $spinupwp->sshKeys->delete($sshKeyId);
+```
+On an `SshKey` instance you may also call:
+```php
+$eventIds = $sshKey->delete();
 ```
 
 ### Storage Providers

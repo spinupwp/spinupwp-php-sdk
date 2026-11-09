@@ -64,4 +64,49 @@ class SshKeyTest extends TestCase
         $sshKeys = $this->endpoint->list(2, ['limit' => 100]);
         $this->assertCount(1, $sshKeys);
     }
+
+    public function test_create_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'ssh-keys', [
+            'json' => [
+                'name'      => 'Laptop',
+                'publickey' => 'ssh-ed25519 AAAA laptop',
+            ],
+        ])->andReturn(
+            new Response(201, [], '{"data": {"id": 7, "name": "Laptop", "fingerprint": "cf:2b", "publickey": "ssh-ed25519 AAAA laptop"}}')
+        );
+
+        $sshKey = $this->endpoint->create(['name' => 'Laptop', 'publickey' => 'ssh-ed25519 AAAA laptop']);
+        $this->assertInstanceOf(SshKeyResource::class, $sshKey);
+        $this->assertEquals(7, $sshKey->id);
+        $this->assertEquals('cf:2b', $sshKey->fingerprint);
+    }
+
+    public function test_delete_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'ssh-keys/7', [])->andReturn(
+            new Response(200, [], '{"event_ids": [21, 22]}')
+        );
+
+        $this->assertEquals([21, 22], $this->endpoint->delete(7));
+    }
+
+    public function test_delete_request_for_a_key_that_is_not_in_use(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'ssh-keys/7', [])->andReturn(
+            new Response(200, [], '{"event_ids": []}')
+        );
+
+        $this->assertSame([], $this->endpoint->delete(7));
+    }
+
+    public function test_delete_from_a_resource(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'ssh-keys/7', [])->andReturn(
+            new Response(200, [], '{"event_ids": [21]}')
+        );
+
+        $sshKey = new SshKeyResource(['data' => ['id' => 7, 'name' => 'Laptop']], $this->spinupwp);
+        $this->assertEquals([21], $sshKey->delete());
+    }
 }
