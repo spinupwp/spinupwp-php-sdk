@@ -26,4 +26,21 @@ class SshKey extends Endpoint
             $this->getPaginator($sshKeys['pagination'], $parameters),
         );
     }
+
+    public function create(array $data): SshKeyResource
+    {
+        $sshKey = $this->postRequest('ssh-keys', $data);
+
+        return new SshKeyResource($sshKey, $this->spinupwp);
+    }
+
+    /**
+     * @return int[] The IDs of the events removing the key from the site users and sudo users that had it.
+     */
+    public function delete(int $id): array
+    {
+        $request = $this->deleteRequest("ssh-keys/{$id}");
+
+        return $request['event_ids'];
+    }
 }

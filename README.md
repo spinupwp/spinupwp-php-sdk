@@ -387,6 +387,20 @@ $key = $spinupwp->sshKeys->get();
 
 // Return a collection of the SSH keys configured on your team
 $sshKeys = $spinupwp->sshKeys->list();
+
+// Add an SSH key to your team
+$sshKey = $spinupwp->sshKeys->create([
+    'name' => "Vincent's laptop",
+    'publickey' => 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...',
+]);
+
+// Delete an SSH key from your team. It's also removed from every site user and sudo user
+// that has it. Returns the IDs of those update events.
+$eventIds = $spinupwp->sshKeys->delete($sshKeyId);
+```
+On an `SshKey` instance you may also call:
+```php
+$eventIds = $sshKey->delete();
 ```
 
 ### Storage Providers
