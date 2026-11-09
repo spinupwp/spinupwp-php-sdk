@@ -730,4 +730,48 @@ class SiteTest extends TestCase
 
         $this->assertNull($this->siteEndpoint->updateSiteUser(1, ['authentication' => 'password']));
     }
+
+    public function test_add_site_user_ssh_key_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/site-user/ssh-keys', [
+            'json' => [
+                'ssh_key_id' => 7,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->addSiteUserSshKey(1, 7));
+    }
+
+    public function test_add_site_user_ssh_key_request_when_the_key_is_already_authorized(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('POST', 'sites/1/site-user/ssh-keys', [
+            'json' => [
+                'ssh_key_id' => 7,
+            ],
+        ])->andReturn(
+            new Response(200, [], '{"event_id": null}')
+        );
+
+        $this->assertNull($this->siteEndpoint->addSiteUserSshKey(1, 7));
+    }
+
+    public function test_remove_site_user_ssh_key_request(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/site-user/ssh-keys/7', [])->andReturn(
+            new Response(200, [], '{"event_id": 100}')
+        );
+
+        $this->assertEquals(100, $this->siteEndpoint->removeSiteUserSshKey(1, 7));
+    }
+
+    public function test_remove_site_user_ssh_key_request_when_the_key_is_not_authorized(): void
+    {
+        $this->client->shouldReceive('request')->once()->with('DELETE', 'sites/1/site-user/ssh-keys/7', [])->andReturn(
+            new Response(200, [], '{"event_id": null}')
+        );
+
+        $this->assertNull($this->siteEndpoint->removeSiteUserSshKey(1, 7));
+    }
 }

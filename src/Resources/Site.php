@@ -188,4 +188,14 @@ class Site extends Resource
     {
         return $this->spinupwp->sites->updateSiteUser($this->id, $data);
     }
+
+    public function addSiteUserSshKey(int $sshKeyId): ?int
+    {
+        return $this->spinupwp->sites->addSiteUserSshKey($this->id, $sshKeyId);
+    }
+
+    public function removeSiteUserSshKey(int $sshKeyId): ?int
+    {
+        return $this->spinupwp->sites->removeSiteUserSshKey($this->id, $sshKeyId);
+    }
 }
